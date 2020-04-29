@@ -6,7 +6,7 @@ As discussed in the introduction integration has been a challenge for decades in
 As the Red Hat healthcare team thought about potential ways to help the clinical integration space, they came up 
 some differentiators for whatever platform would be built:
 
-* Extenibility
+* Extensibility
 * Reduce Proprietary Knowledge
 * Open Source Enablement
 * Modern Application Development/Delivery Capabilities
