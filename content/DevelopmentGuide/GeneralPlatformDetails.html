@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>General iDAAS Platform Notes</title>
+</head>
+<body>
+<img src="../images/general/Logo-RedHat-A-Color-RGB.png" height="75" width="175"/>
+<h1>General</h1>
+<p>
+    This content is intended to provide developers guidance on using the platform either from an implementation or development enhancement
+    perspective.
+</p>
+
+<h1>Background</h1>
+<p>
+    For decades across the various markets within healthcare (clinical, financial, pharmacy and life sciences) integration has been a challenge for many differnt reasons.
+    Within Red Hat there is a specific industry team dedicated to ensuring Red Hat's technologies meet the industry needs and ensuring its customers have meaningful platforms that demonstrate these capabilities. The Red Hat healthcare team, has had a specific interest in enabling and empowering healthcare organizations to transform their integration efforts while also introducing and infusing Red Hat's open organization, open source mindset and community based culture as well. As the Red Hat healthcare team started this journey they also wanted to ensure they could help showcase integration as an innovation enabler and helping simplify IT.
+    As discussed in the introduction integration has been a challenge for decades in each market within healthcare. Within healthcare the challenges have been driven by many different factors, here are just a few common ones: industry standards (HL7) that aren't constrained enough, Clincal software vendor market constraints, COTS integration vendor lock-in, and government mandates that they cannot directly support without third party vendor engagement.
+    <br>
+    As the Red Hat healthcare team thought about potential ways to help the clinical integration space, they came up some differentiators for whatever platform would be built:
+    <br>
+<ul>
+    <li>Extensibility</li>
+    <li>Reduce Proprietary Knowledge</li>
+    <li>Open Source Enablement</li>
+    <li>Modern Application Development/Delivery Capabilities</li>
+    <li>Reduce Proprietary Skill set(s)</li>
+    <li> Innovative Disruption</li>
+    <li>Deliver Consistency</li>
+    <li>Polyglot Language Support</li>
+</ul>
+<br>
+Here's how the differentiators are being addressed:
+<br>
+<ul>
+    <li>Extensibility: The focus has been on building an extensible platform based on need and usage. The platform is just a series of components that can be connected, extended or new components developed as developers and business teams work together. Within the platform it is developed to enable small to large and complex healthcare organizations to leverage this platform. The platform looks at ANY data as by the application, components, facilities, and overall organization associated with EVERY transaction.
+    </li>
+    <li>Reduce Proprietary Knowledge: We have removed COTS or black box box software and gone with a very open approach. Our approach leverages the numerous Open Source and upstream Open Source products Red Hat is engaged in. Here are several of the technologies this platform leverages: Spring Boot, Red Hat Fuse, Red Hat Process Automation Manager (Business Rules, Workflow and Complex Event Processing), Red Hat A-MQ Streams (Kafka) - (we also into an A-MQ release as well).
+    </li>
+    <li>Open Source Enablement: Provide the source code of the components to extend as needed.</li>
+    <li>Modern Application Development/Delivery Capabilities: Where applicable everything is cloud native/container focused. Several of the platform components are based on SpringBoot for easy of deployment and running.
+    </li>
+    <li>Reduce Preprietary Skillsets: Removing COTS centric skillsets. This platform is about enabling industry best technologies to enable healthcare to build capabilities rapidly.</li>
+    <li>Disruption: This platform is absolutely designed to enable disruption and enable innovation at the speed of business and technologists.</li>
+    <li>Deliver Consistency: Focus around industry standard design and integration patterns. We don't require deep knowledge of the industry standards to get started, just common developer skill sets.</li>
+    <li>Polyglot Language Support: Enabling the use of many different programming languages. The focus here is to ensure by major capability area a programming language is supported.</li>
+</ul>
+<br>
+Platform: Connected Health / iDAAS
+<br>
+As part of the general vision for healthcare, the Red Hat healthcare team established a extensible platform, Connected Health/iDAAS (Intelligent Data As A Service). As we have above we wanted to focus on several things extensibility, open source enablement, consistency, modern development approach, disruption and community enablement. In this section we want to cover the specific components within iDAAS that are helping us build forward on these differentiators. As you are reading through this it is important to ensure understanding that iDAAS is a platform that is developed as a set of components working with industry leading technologies that enable us a broad range of capabilities, it is not merely a code base written in a programming language. The reason we have followed this pattern is that we can leverage a large set community to ensure we can address potential issues and concerns quickly with a large technical community. Let's do a walk through of the capability areas within iDAAS.
+<br>
+Here are some of the capabilities, the five R’s:
+<br>
+<ul>
+    <li>Receive: receive data from various formats. We have branded this capability iDAAS Connect. From receiving data we focus on industry standards and then third party connectivity. Industry standards support include HL7 v2, FHIR, and EDI Claims.
+        There are potential future plans for NCPDP and HL7 v3 message support being discussed. From a third party connectivity perspective we focus on building an on-ramp for data to be leveraged within iDAAS for over 75 common protocols like JDBC data
+        sources, File, FTP, SFTP, FTPS, APIs, WSDL, AS400, Mongo, Kafka, numerous cloud platforms and many more.</li>
+    <li>Route: enable data to be routed to many sources. For this capability we have focused on building out several specific components such as healthcare event builder (both code and integration) to form the intelligent healthcare data router. In order
+        to demonstrate this, our focus was on building a reusable repeatable enterprise application integration message pattern along with the ability for organizations to build and deliver healthcare
+        even streaming.</li>
+    <li>Run: This is one of the most exciting capabilities we are enabling. This is done through our DREAM component. DREAM, Data Realtime Exchange Automated Management, is all about driving change in the healthcare community and building out a value
+        exchange that can be used by anyone implementing iDAAS to add new capabilities in a low latency and very low risk. You would build a component that has the capability of acting on streaming information and being invoked in a real-time manner. </li>
+    These activities could include areas like event population and building, business rules enablement, third party application integration, AI, ML, dynamic mapping of data sources, cross mapping codes and many other potential examples.
+    <li>Resolve: Enable error handling and insight to resolve potential processing issues. Also, the need to replay messages for new needs.</li>
+    <li>Research: Enable access to information in a reusable auditable manner. This includes our ability to enable real time clinical information to be tagged as its passing through the platform.</li>
+</ul>
+<br>
+Here are the technologies that drive the capabilities:
+<br>
+Integration: Ties back to Red Hat’s Fuse and its upstream Apache Camel community. This technology is backed by one of the most active communities and continues to grow and expand this technology
+for well over a decade. As part of its commitment there are thousands of implementations of all sizes, types and scale levels in numerous industries with some of them growing to support 1 billion daily transactions. As part of its growth are the hundred plus connectors that it natively supports, this will be very beneficial for Red Hat’s healthcare team as the platform looks to grow and expand based on feedback and demand.
+<br>
+Business Rules: This capability is supported by Decision Manager and the upstream Drools community. This technology is very largely adopted and implemented throughout the community. Drools has a very large footprint in organizations all over the world delivering expert based solutions and capabilities.
+<br>
+Data Streaming: A key effort for us is enabling and building a high end data streaming and distribution platform. This capability is being supported by AMQ-Streams and the upstream Kafka community. We are also looking at future implementations with other distributed queuing technologies. As a side note, within the codebase there is a codebase built atop Apache-MQ; however, we maintain the code ONLY for resources that would rather leverage that technology.
+<br>
+APIs: we have developed all the APIs leveraging .Net Core v3. This will be in two seperate efforts, one is for the platform and one will be for the data tier.
+<br>
+UX /User Interfaces: The UX experience for the platform is currently driven by .Net Core v3 based assets and a very modern, responsive application design. These applications are best run on the industry leading OpenShift platform for scale. The security model for these capabilities is currently being worked through to ensure the platform is demonstrable, the focus is on showcasing security and enabling the adopters to tie it to LDAP/AD or SAML based systems for the highest level of security.
+<br>
+Data: We currently are moving to support DDLs for SQL Server, Maria DB (MySQL) and Postgres. This is because there is wide adoption of these within healthcare. The first few implementations with be SQL Server DDL centric as well finalize data model validation. We also intend to expand towards NoSQL standards quickly as we continue to implement new features. Connected Health/iDAAS overall objective is to simplify data integration and interoperability needs. By establishing a platform initally this enabled the team to focus on the overall industry needs and work through them and establish capabilities for each. As the capabilities were worked through components have been developed to address these needs.
+</p>
+Here is where iDAAS fits into the numerous healthcare markets:>
+<p align="center" >
+    <img src="../images/iDAAS-Platform/iDAAS%20-%20High%20Level%20Solution%20Overview.png" height="750" width="600"/>
+</p>
+
+Then, as we think about all the ways it is a platform and can be extended.
+<p align="center" >
+    <img src="../images/iDAAS-Platform/iDAAS%20Platform%20-%20iDAAS%20Connect%20and%20Vendor%20FHIR%20Modules.png" alt="iDAAS Component Design"
+         width="600" height="600" />
+</p>
+
+<h2>Developer Topics</h2>
+<p>
+    Below are a set of links to specific development centric topics.
+    <br><br>
+    <a href="./development/gettingthecode.html" target="_blank" text-decoration: none>Getting The Code</a>
+</p>
+<h2>Implementation Topics</h2>
+<p>
+    Below are a set of links to specific implementation centric topics.
+    <br><br>
+    <a href="./implementation/iDAAS-Scenarios.html" target="_blank" text-decoration: none>iDAAS Platform Scenarios</a>
+    <a href="./implementation/runningthecode.html" target="_blank" text-decoration: none>Running The Code</a>
+</p>
+
+Your feedback and thoughts on how we can enhance these and make this content better is always welcome please feel free to email <a href="email:alscott@redhat.com" target="_blank" text-decoration: none>alscott@redhat.com</a>
+
+</body>
+</html>

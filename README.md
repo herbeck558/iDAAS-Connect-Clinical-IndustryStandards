@@ -48,6 +48,18 @@ Here are the technologies that drive the capabilities:
 * Data: We currently are moving to support DDLs for SQL Server, Maria DB (MySQL) and Postgres. This is because there is wide adoption of these within healthcare. The first few implementations with be SQL Server DDL centric as well finalize data model validation. We also intend to expand towards NoSQL standards quickly as we continue to implement new features.
 Connected Health/iDAAS overall objective is to simplify data integration and interoperability needs. By establishing a platform initally this enabled the team to focus on the overall industry needs and work through them and establish capabilities for each. As the capabilities were worked through components have been developed to address these needs. 
 
+# Other Contributions within Source
+In order to try and not just put the software out there we also wanted to help development and implementation as well. 
+To help support these areas we have included additional artifacts within specific directories. 
+
+* content: This directory is intended to maintain any content published about the platform. Within this directory is the Development documentation and implementation guides along with images that are leveraged within the 
+content or site to help ensure everyone has all the available materials.
+* platform-scripts: designed to assist implementation with scripts that can be downloaded and leveraged. 
+It should be understood that these scripts will need to be tweaked, mostly to address base implemented directories of solutions. These scripts currently cover A-MQ and Kafka. The intent for them is to be able to start the products and enable implementors to quickly get the products running. 
+
+# Data Enablement: iDAAS Connect Clinical Industry Standards
+The problem of healthcare connectivity and data enablement has been around for decades. Vendors have had long standing practices of limiting paying customers to the data within the systems they operate and manage. As healthcare organizations prepare for their digital experiences, or look to re-evaluate their current digital experience capabilities, this is no longer a practice that can be tolerated or endured. Within iDAAS, this is the component responsible for providing connectivity to the clinical based industry standards of HL7 v2 messages and FHIR. From an integration connectivity and standards perspective it can demonstrates the processesing HL7v2 messages of the following types from any vendor and any specifc message version from 2.1 to 2.8: ADT (Admissions), ORM (Orders), ORU (Results), SCH (Schedules), PHA (Pharmacy), MFN (Master File Notifications), MDM (Medical Document Management) and VXU (Vaccinations). With the final CMS rule around Interoperability we have also added FHIR R4 Support. 
+
 Here is a general visual of how iDAAS fits in and can enable innovation and solving the problem of integration innovation in the clinical space:
 <p align="center" >
 <img src="https://github.com/redhat-healthcare-chiefarchitect/iDAAS-Connect-Clinical-IndustryStds/blob/development/content/images/iDAAS%20-%20High%20Level%20Solution%20Overview.png" alt="Healthcare Integration" width="500" height="350" />
@@ -58,9 +70,6 @@ Here is a visual on the iDAAS Platform and all its specific components:
 <img src="https://github.com/redhat-healthcare-chiefarchitect/iDAAS-Connect-Clinical-IndustryStds/blob/development/content/images/iDAAS%20Platform%20-%20iDAAS%20Connect%20and%20Vendor%20FHIR%20Modules.png/" alt="iDAAS Component Design" 
 width="600" height="600" />
 </p>
-
-# Data Enablement: iDAAS Connect Clinical Industry Standards
-The problem of healthcare connectivity and data enablement has been around for decades. Vendors have had long standing practices of limiting paying customers to the data within the systems they operate and manage. As healthcare organizations prepare for their digital experiences, or look to re-evaluate their current digital experience capabilities, this is no longer a practice that can be tolerated or endured. Within iDAAS, this is the component responsible for providing connectivity to the clinical based industry standards of HL7 v2 messages and FHIR. From an integration connectivity and standards perspective it can demonstrates the processesing HL7v2 messages of the following types from any vendor and any specifc message version from 2.1 to 2.8: ADT (Admissions), ORM (Orders), ORU (Results), SCH (Schedules), PHA (Pharmacy), MFN (Master File Notifications), MDM (Medical Document Management) and VXU (Vaccinations). With the final CMS rule around Interoperability we have also added FHIR R4 Support. 
 
 # Industry Standard Support
 As mentioned above we discussed the industry Standard support. This section covers the clinical integration standards and detailed links that are support by the implementation of the platform:
@@ -101,14 +110,6 @@ Here are some specific details for all the demonstrations developed:
 | Healthcare Facilities |  MCTN |   
 | Sending Application(s)|  MMS (Main Medical Software)/Care Kiosk UI |
 | Custom Integrated Application | myEHR |
-
-# Other Contributions within Source
-
-While this repository has all the source code needed to run the solution, it also has several additional artifacts within specific  directories that are needed to run the code:
-
-* content: This directory is intended to maintain any content published about the platform. Within this directory is the Development documentation and implementation guides along with images that are leveraged within the 
-content or site to help ensure everyone has all the available materials.
-* platform-scripts: designed to assist implementation with scripts that can be downloaded and leveraged. It should be understood that these scripts will need to be tweaked, mostly to address base implemented directories of solutions. These scripts cover A-MQ and Kafka. The intent for them is to be able to start the products and enable implementors to quickly get the products running. 
 
 # Building and Running
 
