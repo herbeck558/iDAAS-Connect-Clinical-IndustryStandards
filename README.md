@@ -62,12 +62,12 @@ The problem of healthcare connectivity and data enablement has been around for d
 
 Here is a general visual of how iDAAS fits in and can enable innovation and solving the problem of integration innovation in the clinical space:
 <p align="center" >
-<img src="https://github.com/RedHat-Healthcare/iDAAS-Connect-Clinical-IndustryStandards/tree/master/content/images/iDAAS-Platform/iDAAS%20-%20High%20Level%20Solution%20Overview.png" alt="Healthcare Integration" width="500" height="350" />
+<img src="content/images/iDAAS-Platform/iDAAS%20-%20High%20Level%20Solution%20Overview.png" alt="Healthcare Integration" width="500" height="350" />
 </p>
 
 Here is a visual on the iDAAS Platform and all its specific components:
 <p align="center" >
-<img src="https://github.com/RedHat-Healthcare/iDAAS-Connect-Clinical-IndustryStandards/tree/master/content/images/iDAAS-Platform/iDAAS%20Platform%20-%20iDAAS%20Connect%20and%20Vendor%20FHIR%20Modules.png/" alt="iDAAS Component Design" 
+<img src="content/images/iDAAS-Platform/iDAAS%20Platform%20-%20iDAAS%20Connect%20and%20Vendor%20FHIR%20Modules.png" alt="iDAAS Component Design" 
 width="600" height="600" />
 </p>
 
