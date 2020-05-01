@@ -29,4 +29,48 @@ logging:
   level:
     com.redhat.idaas: INFO
 
+#  https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config-application-property-files
+#  Application Properties Example
+# environments:
+#   dev:
+#     url: https://dev.example.com
+#     name: Developer Setup
+# These settings equate to
+# environments.dev.url=https://dev.example.com
+# environments.dev.name=Developer Setup
+
+#Updated Servlet endpoint
+# localhost://8080
+# default is /camel/*
+camel.component.servlet.mapping.context-path: /fhir/*
+
+# MLLP Ports
+mllp-settings:
+  ADTPort:
+  OrdersPort:
+  PharmacyPort:
+  ResultsPort:
+  SchedulePort:
+  MasterDocumentPort:
+  MasterFilePort:
+  VaccinationPort:
+
+# Kafka
+kafkasettings.hostvalue: 0.0.0.0
+kafkasettings.portnumber: 9032
+
+# FHIR Server
+FHIRServerSettings:
+  CodeSystemURL:
+  DiagnosticResultURL:
+  EncounterURL:
+  ImmunizationURL:
+  MedicationRequestURL:
+  MedicationStatementURL:
+  ObservationURL:
+  OrderURL:
+  PatientURL:
+  PersonURL:
+  ProcedureURL:
+  ScheduleURL:
 

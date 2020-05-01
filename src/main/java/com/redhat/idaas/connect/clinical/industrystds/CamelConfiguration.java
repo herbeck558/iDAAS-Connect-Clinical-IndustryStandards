@@ -16,6 +16,7 @@
  */
 package com.redhat.idaas.connect.clinical.industrystds;
 
+import ca.uhn.fhir.store.IAuditDataStore;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
@@ -79,11 +80,10 @@ public class CamelConfiguration extends RouteBuilder {
 	  from("netty4:tcp://0.0.0.0:10001?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
 	    //from("file:src/data-in/hl7v2/adt?delete=true?noop=true")
         .routeId("hl7TcpRouteAdmissions")
-        .setBody(body()) // Message to send
         .to("kafka:MCTN_MMS_ADT?brokers=localhost:9092")
         // iDAAS DataHub Processing
         .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
-        .log(LoggingLevel.INFO, log, "HL7 Admissions Message: [${body}]")
+        //.log(LoggingLevel.INFO, log, "HL7 Admissions Message: [${body}]")
         //Response to HL7 Message Sent Built by platform
         .transform(HL7.ack())
       // This would enable persistence of the ACK
@@ -93,7 +93,6 @@ public class CamelConfiguration extends RouteBuilder {
     from("netty4:tcp://0.0.0.0:10002?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
       //from("file:src/data-in/hl7v2/orm?delete=true?noop=true")
       .routeId("hl7TcpRouteOrders")
-      .setBody(body()) // Message to send
       .to("kafka:MCTN_MMS_ORM?brokers=localhost:9092")
       // iDAAS DataHub Processing
       .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
@@ -107,7 +106,6 @@ public class CamelConfiguration extends RouteBuilder {
     from("netty4:tcp://0.0.0.0:10003?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
       //from("file:src/data-in/hl7v2/orm?delete=true?noop=true")
       .routeId("hl7TcpRouteResults")
-      .setBody(body()) // Message to send
       .to("kafka:MCTN_MMS_ORU?brokers=localhost:9092")
       // iDAAS DataHub Processing
       .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
@@ -121,7 +119,6 @@ public class CamelConfiguration extends RouteBuilder {
     from("netty4:tcp://0.0.0.0:10004?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
       //from("file:src/data-in/hl7v2/orm?delete=true?noop=true")
       .routeId("hl7TcpRoutePharmacy")
-      .setBody(body()) // Message to send
       .to("kafka:MCTN_MMS_RDE?brokers=localhost:9092")
       // iDAAS DataHub Processing
       .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
@@ -135,7 +132,6 @@ public class CamelConfiguration extends RouteBuilder {
     from("netty4:tcp://0.0.0.0:10005?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
       //from("file:src/data-in/hl7v2/orm?delete=true?noop=true")
       .routeId("hl7TcpRouteMasterFiles")
-      .setBody(body()) // Message to send
       .to("kafka:MCTN_MMS_MFN?brokers=localhost:9092")
       // iDAAS DataHub Processing
       .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
@@ -149,7 +145,6 @@ public class CamelConfiguration extends RouteBuilder {
     from("netty4:tcp://0.0.0.0:10006?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
        //from("file:src/data-in/hl7v2/orm?delete=true?noop=true")
        .routeId("hl7TcpRouteMasterDocs")
-       .setBody(body()) // Message to send
        .to("kafka:MCTN_MMS_MDM?brokers=localhost:9092")
        // iDAAS DataHub Processing
        .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
@@ -163,21 +158,19 @@ public class CamelConfiguration extends RouteBuilder {
     from("netty4:tcp://0.0.0.0:10007?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
        //from("file:src/data-in/hl7v2/orm?delete=true?noop=true")
        .routeId("hl7TcpRouteSchedule")
-        .setBody(body()) // Message to send
-        .to("kafka:MCTN_MMS_SCH?brokers=localhost:9092")
-        // iDAAS DataHub Processing
-        .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
-        .log(LoggingLevel.INFO, log, "HL7 Schedule Message: [${body}]")
-        //Response to HL7 Message Sent Built by platform
-        .transform(HL7.ack())
-        // This would enable persistence of the ACK
+       .to("kafka:MCTN_MMS_SCH?brokers=localhost:9092")
+       // iDAAS DataHub Processing
+       .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
+       .log(LoggingLevel.INFO, log, "HL7 Schedule Message: [${body}]")
+       //Response to HL7 Message Sent Built by platform
+       .transform(HL7.ack())
+       // This would enable persistence of the ACK
     ;
 
     // VXU
     from("netty4:tcp://0.0.0.0:10008?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
        //from("file:src/data-in/hl7v2/orm?delete=true?noop=true")
        .routeId("hl7TcpRouteVaccination")
-       .setBody(body()) // Message to send
        .to("kafka:MCTN_MMS_VXU?brokers=localhost:9092")
        // iDAAS DataHub Processing
        .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
@@ -204,20 +197,36 @@ public class CamelConfiguration extends RouteBuilder {
      *  Procedure
      *  Schedule
      */
-    from("jetty://http://localhost:8888/fhircodesystem")
-       //to("https://weather.yahoo.com/united-states?bridgeEndpoint=true&throwExceptionOnFailure=false&traceEnabled").
-       .routeId("FHIRCodeSystem")
-       .log(LoggingLevel.INFO, log, "FHIR CodeSystem Message: [${body}]")
-       // iDAAS DataHub Processing
-       .to("kafka:opsMgmt_FHIR_RcvdTrans?brokers=localhost:9092")
+
+    // Audit
+    from("direct:audit")
+            // look at simple for expressions of exchange properties
+            // .setHeader("source").simple("Value")
+            .setHeader("source").constant("Value")
+            .setHeader("sourcename").exchangeProperty("component")
+
+        .to("kafka:opsMgmt_FHIR_RcvdTrans?brokers=localhost:9092")
     ;
+
+    // wireTap to direct and the direct will be leveraged to add all the headers in one place
+    from("servlet://fhirrcodesystem")
+      .routeId("FHIRCodeSystem")
+      .setProperty("component").constant("FHIRCodeSystem")
+      // iDAAS DataHub Processing
+      //.wireTap("kafka:opsMgmt_FHIR_RcvdTrans?brokers=localhost:9092")
+      .wireTap("direct:audit")
+      // Persist for Routing
+      //.wireTap("kafka:FHIRCodes?brokers=localhost:9092")
+      .to("https://localhost:9443/fhir-server/api/v4/CodeSystem")
+      .wireTap("kafka:opsMgmt_FHIR_RcvdTrans?brokers=localhost:9092")
+     ;
 
     from("jetty://http://localhost:8888/fhirdiagnosticresult")
       //to("https://weather.yahoo.com/united-states?bridgeEndpoint=true&throwExceptionOnFailure=false&traceEnabled").
       .routeId("FHIRDiagnosticResult")
       .log(LoggingLevel.INFO, log, "FHIR Diagnostic Result Message: [${body}]")
       // iDAAS DataHub Processing
-      .to("kafka:opsMgmt_FHIR_RcvdTrans?brokers=localhost:9092")
+      .wireTap("kafka:opsMgmt_FHIR_RcvdTrans?brokers=localhost:9092")
     ;
 
     from("jetty://http://localhost:8888/fhirencounter")
