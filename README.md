@@ -113,13 +113,19 @@ Here are some specific details for all the demonstrations developed:
 
 # Building and Running
 
-This code can be built with the following command:
+This code can be built (and will be run) with the following command:
 
 mvn clean install
 
-After building and then running the solution, implementors might want to test. We have included industry samples for everyone to leverage.
+To repackage the solution to a single jar:
 
-Within the src/test/data there are two directories test-hl7 and test-fhir.
+mvn package
+
+# Testing Data
+
+After building, running and/or deploying implementors might want to test. We have included industry samples for everyone to leverage.
+
+Within the solutiin in the src/test/data there are two directories test-hl7 and test-fhir.
 
 # Containers Based - Openshift (where possible) 
 It is assumed that:
