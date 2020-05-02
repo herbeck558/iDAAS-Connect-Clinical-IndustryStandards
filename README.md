@@ -1,6 +1,6 @@
 # Data Enablement: iDAAS Connect Clinical Industry Standards
 
-As you read, or can find on the iDAAS main repository we discussed the need for what we called the Five R's, here are the two R's this component helps us achieve:
+As you read, or can find on the <a href="https://github.com/RedHat-Healthcare/iDAAS" target="_blank">iDAAS main repository</a> we discussed the need for what we called the Five R's, here are the two R's this component helps us achieve:
 
 * Receive: receive data from various formats. We have branded this capability iDAAS Connect. From receiving data we focus on industry standards and then third party connectivity. Industry standards support include HL7 v2, FHIR, and EDI Claims. There are potential future plans for  NCPDP and HL7 v3 message support being discussed. From a third party connectivity perspective we focus on building an on-ramp for data to be leveraged within iDAAS for over 75 common protocols like JDBC data sources, File, FTP, SFTP, FTPS, APIs, WSDL, AS400,  Mongo, Kafka, numerous cloud platforms  and many more.
 * Route: enable data to be routed to many sources. For this capability we have focused on building out several specific components such as healthcare event builder (both code and integration) to form the intelligent healthcare data router. In order to demonstrate this, our focus was on building a reusable repeatable enterprise application integration message pattern along with the ability for organizations to build and deliver healthcare even streaming.
