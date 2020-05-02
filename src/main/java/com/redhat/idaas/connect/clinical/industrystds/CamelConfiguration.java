@@ -32,6 +32,9 @@ import org.springframework.context.annotation.Bean;
 //import org.springframework.jms.connection.JmsTransactionManager;
 //import javax.jms.ConnectionFactory;
 import org.springframework.stereotype.Component;
+import sun.util.calendar.BaseCalendar;
+
+import java.time.LocalDate;
 
 @Component
 public class CamelConfiguration extends RouteBuilder {
@@ -64,52 +67,95 @@ public class CamelConfiguration extends RouteBuilder {
 
   /*
    * Kafka implementation based upon https://camel.apache.org/components/latest/kafka-component.html
-   * HL7 implementation based upon https://camel.apache.org/components/latest/dataformats/hl7-dataformat.html
+   *
    */
   @Override
   public void configure() throws Exception {
-	  /*
-	   *  HL7 v2x Server Implementations
-	   *  ------------------------------
-	   *  There is NO restriction or limitation on data by version or with their dreaded Z-Segments
-	   *  Please go to https://www.hl7.org/implement/standards/product_brief.cfm?product_id=185 for more details.
-	   *  If you need to download ANY specifications an HL7 account will be required.
-	   */
+
+    /*
+     * Audit
+     *
+     * Direct component within platform to ensure we can centralize logic
+     * There are some values we will need to set within every route
+     * We are doing this to ensure we dont need to build a series of beans
+     * and we keep the processing as lightweight as possible
+     *
+     */
+
+    from("direct:auditing")
+      // look at simple for expressions of exchange properties
+      // .setHeader("source").simple("Value")
+      .setHeader("industrystd").exchangeProperty("industrystd")
+      .setHeader("component").exchangeProperty("component")
+      .setHeader("messagetrigger").exchangeProperty("messagetrigger")
+      .setHeader("processname").exchangeProperty("processname")
+      .to("kafka:opsMgmt_FHIR_RcvdTrans?brokers=localhost:9092")
+    ;
+    /*
+    *  Logging
+    */
+    from("direct:logging")
+      //.log(LoggingLevel.INFO, log, "HL7 Admissions Message: [${body}]")
+    ;
+
+    /*
+	 *  HL7 v2x Server Implementations
+	 *  ------------------------------
+	 *  HL7 implementation based upon https://camel.apache.org/components/latest/dataformats/hl7-dataformat.html
+	 *  There is NO restriction or limitation on data by version or with their dreaded Z-Segments
+	 *  Please go to https://www.hl7.org/implement/standards/product_brief.cfm?product_id=185 for more details.
+	 *  If you need to download ANY specifications an HL7 account will be required.
+	 *  Below is an example of how to leverage the test data without needing external HL7 message data
+	 *  from("file:src/data-in/hl7v2/adt?delete=true?noop=true")
+	 */
 
 	  // ADT
 	  from("netty4:tcp://0.0.0.0:10001?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
-	    //from("file:src/data-in/hl7v2/adt?delete=true?noop=true")
-        .routeId("hl7TcpRouteAdmissions")
-        .to("kafka:MCTN_MMS_ADT?brokers=localhost:9092")
+        .routeId("hl7Admissions")
+        // set Auditing Properties
+        // ${date:now:dd-MM-yyyy HH:mm}
+        .setProperty("industrystd").constant("HL7")
+        .setProperty("messagetrigger").constant("ADT")
+        .setProperty("component").constant("ADTReceive")
+        .setProperty("processname").constant("Input")
         // iDAAS DataHub Processing
-        .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
-        //.log(LoggingLevel.INFO, log, "HL7 Admissions Message: [${body}]")
+        .wireTap("direct:auditing")
+        // Send to Topic
+        .to("kafka:MCTN_MMS_ADT?brokers=localhost:9092")
         //Response to HL7 Message Sent Built by platform
         .transform(HL7.ack())
-      // This would enable persistence of the ACK
+         // This would enable persistence of the ACK
     ;
 
     // ORM
     from("netty4:tcp://0.0.0.0:10002?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
-      //from("file:src/data-in/hl7v2/orm?delete=true?noop=true")
-      .routeId("hl7TcpRouteOrders")
-      .to("kafka:MCTN_MMS_ORM?brokers=localhost:9092")
-      // iDAAS DataHub Processing
-      .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
-      .log(LoggingLevel.INFO, log, "HL7 Order Message: [${body}]")
-      //Response to HL7 Message Sent Built by platform
-      .transform(HL7.ack())
-      // This would enable persistence of the ACK
+      .routeId("hl7Orders")
+      // set Auditing Properties
+      .setProperty("industrystd").constant("HL7")
+      .setProperty("messagetrigger").constant("ORM")
+      .setProperty("component").constant("ORMReceive")
+      .setProperty("processname").constant("Input")
+       // iDAAS DataHub Processing
+       .wireTap("direct:auditing")
+       // Send to Topic
+       .to("kafka:MCTN_MMS_ORM?brokers=localhost:9092")
+       //Response to HL7 Message Sent Built by platform
+       .transform(HL7.ack())
+       // This would enable persistence of the ACK
     ;
 
     // ORU
     from("netty4:tcp://0.0.0.0:10003?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
-      //from("file:src/data-in/hl7v2/orm?delete=true?noop=true")
-      .routeId("hl7TcpRouteResults")
-      .to("kafka:MCTN_MMS_ORU?brokers=localhost:9092")
+      .routeId("hl7Results")
+      // set Auditing Properties
+      .setProperty("industrystd").constant("HL7")
+      .setProperty("messagetrigger").constant("ORU")
+      .setProperty("component").constant("ORUReceive")
+      .setProperty("processname").constant("Input")
       // iDAAS DataHub Processing
-      .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
-      .log(LoggingLevel.INFO, log, "HL7 Result Message: [${body}]")
+      .wireTap("direct:auditing")
+      // Send to Topic
+      .to("kafka:MCTN_MMS_ORU?brokers=localhost:9092")
       //Response to HL7 Message Sent Built by platform
       .transform(HL7.ack())
       // This would enable persistence of the ACK
@@ -117,12 +163,16 @@ public class CamelConfiguration extends RouteBuilder {
 
     // RDE
     from("netty4:tcp://0.0.0.0:10004?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
-      //from("file:src/data-in/hl7v2/orm?delete=true?noop=true")
-      .routeId("hl7TcpRoutePharmacy")
-      .to("kafka:MCTN_MMS_RDE?brokers=localhost:9092")
+      .routeId("hl7Pharmacy")
+      // set Auditing Properties
+      .setProperty("industrystd").constant("HL7")
+      .setProperty("messagetrigger").constant("RDE")
+      .setProperty("component").constant("RDEReceive")
+      .setProperty("processname").constant("Input")
       // iDAAS DataHub Processing
-      .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
-      .log(LoggingLevel.INFO, log, "HL7 Pharmacy Message: [${body}]")
+      .wireTap("direct:auditing")
+      // Send to Topic
+      .to("kafka:MCTN_MMS_RDE?brokers=localhost:9092")
       //Response to HL7 Message Sent Built by platform
       .transform(HL7.ack())
       // This would enable persistence of the ACK
@@ -130,16 +180,22 @@ public class CamelConfiguration extends RouteBuilder {
 
     // MFN
     from("netty4:tcp://0.0.0.0:10005?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
-      //from("file:src/data-in/hl7v2/orm?delete=true?noop=true")
-      .routeId("hl7TcpRouteMasterFiles")
-      .to("kafka:MCTN_MMS_MFN?brokers=localhost:9092")
+      .routeId("hl7MasterFiles")
+      // set Auditing Properties
+      .setProperty("industrystd").constant("HL7")
+      .setProperty("messagetrigger").constant("MFN")
+      .setProperty("component").constant("MFNReceive")
+      .setProperty("processname").constant("Input")
       // iDAAS DataHub Processing
-      .to("kafka:opsMgmt_HL7_RcvdTrans?brokers=localhost:9092")
-      .log(LoggingLevel.INFO, log, "HL7 Master File Message: [${body}]")
+      .wireTap("direct:auditing")
+      // Send to Topic
+      .to("kafka:MCTN_MMS_MFN?brokers=localhost:9092")
       //Response to HL7 Message Sent Built by platform
       .transform(HL7.ack())
     // This would enable persistence of the ACK
     ;
+
+    // Left here
 
     // MDM
     from("netty4:tcp://0.0.0.0:10006?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
@@ -183,42 +239,26 @@ public class CamelConfiguration extends RouteBuilder {
     /*
      *  FHIR
      *  ----
-     *  FHIR Resources:
-     *  CodeSystem
-     *  DiagnosticResult
-     *  Encounter
-     *  EpisodeOfCare
-     *  Immunization
-     *  MedicationRequest
-     *  MedicationStatement
-     *  Observation
-     *  Order
-     *  Patient
-     *  Procedure
-     *  Schedule
+     * these will be accessible within the integration when started the default is
+     * <hostname>:8080/fhir/<resource>
+     * FHIR Resources:
+     *  CodeSystem,DiagnosticResult,Encounter,EpisodeOfCare,Immunization,MedicationRequest
+     *  MedicationStatement,Observation,Order,Patient,Procedure,Schedule
      */
-
-    // Audit
-    from("direct:audit")
-            // look at simple for expressions of exchange properties
-            // .setHeader("source").simple("Value")
-            .setHeader("source").constant("Value")
-            .setHeader("sourcename").exchangeProperty("component")
-
-        .to("kafka:opsMgmt_FHIR_RcvdTrans?brokers=localhost:9092")
-    ;
 
     // wireTap to direct and the direct will be leveraged to add all the headers in one place
     from("servlet://fhirrcodesystem")
       .routeId("FHIRCodeSystem")
+      // set Auditing Properties
+      .setProperty("industrystd").constant("FHIR")
+      .setProperty("messagetrigger").constant("CodeSystem")
       .setProperty("component").constant("FHIRCodeSystem")
+      .setProperty("processname").constant("Input")
       // iDAAS DataHub Processing
-      //.wireTap("kafka:opsMgmt_FHIR_RcvdTrans?brokers=localhost:9092")
-      .wireTap("direct:audit")
-      // Persist for Routing
-      //.wireTap("kafka:FHIRCodes?brokers=localhost:9092")
+      .wireTap("direct:auditing")
+      // Invoke External FHIR Server
       .to("https://localhost:9443/fhir-server/api/v4/CodeSystem")
-      .wireTap("kafka:opsMgmt_FHIR_RcvdTrans?brokers=localhost:9092")
+      // Process Response
      ;
 
     from("jetty://http://localhost:8888/fhirdiagnosticresult")
