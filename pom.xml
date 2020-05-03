@@ -103,10 +103,10 @@
       <version>3.0.0-RC3</version>
     </dependency>-->
     <!-- Added for HTTP Support - FHIR Inbound requests -->
-    <dependency>
+   <!-- <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-jetty</artifactId>
-    </dependency>
+    </dependency>-->
     <!-- REST API Support -->
     <!-- Will need to update project to Camel 3 for support
     <dependency>
