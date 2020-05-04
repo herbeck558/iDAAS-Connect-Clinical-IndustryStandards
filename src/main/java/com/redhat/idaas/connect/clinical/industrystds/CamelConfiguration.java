@@ -85,12 +85,15 @@ public class CamelConfiguration extends RouteBuilder {
     from("direct:auditing")
       // look at simple for expressions of exchange properties
       // .setHeader("source").simple("Value")
-      .setHeader("processingtype").exchangeProperty("processingtype")
-      .setHeader("industrystd").exchangeProperty("industrystd")
-      .setHeader("component").exchangeProperty("component")
-      .setHeader("messagetrigger").exchangeProperty("messagetrigger")
-      .setHeader("processname").exchangeProperty("processname")
-      .to("kafka:opsMgmt_PlatformTransactions?brokers=localhost:9092")
+            .setHeader("source").simple("{$body}")
+            .setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
+            .setHeader("messageprocessedtime").simple("${date:now:HH:mm:ss:SSS}")
+            .setHeader("processingtype").exchangeProperty("processingtype")
+            .setHeader("industrystd").exchangeProperty("industrystd")
+            .setHeader("component").exchangeProperty("component")
+            .setHeader("messagetrigger").exchangeProperty("messagetrigger")
+            .setHeader("processname").exchangeProperty("processname")
+    .to("kafka:opsMgmt_PlatformTransactions?brokers=localhost:9092")
     ;
     /*
     *  Logging
@@ -110,153 +113,163 @@ public class CamelConfiguration extends RouteBuilder {
 	 *  from("file:src/data-in/hl7v2/adt?delete=true?noop=true")
 	 */
 
+    /*
+    *   Simple language reference
+    *   https://camel.apache.org/components/latest/languages/simple-language.html
+    */
 	  // ADT
 	  from("netty4:tcp://0.0.0.0:10001?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
-        .routeId("hl7Admissions")
-        //Logging
-        //.to("direct:logging")
-        // set Auditing Properties
-        // ${date:now:dd-MM-yyyy HH:mm}
-        .setProperty("processingtype").constant("Data")
-        .setProperty("industrystd").constant("HL7")
-        .setProperty("messagetrigger").constant("ADT")
-        .setProperty("component").constant("ADTReceive")
-        .setProperty("processname").constant("Input")
-        // iDAAS DataHub Processing
-        .wireTap("direct:auditing")
-        // Send to Topic
-        .to("kafka:MCTN_MMS_ADT?brokers=localhost:9092")
-        //Response to HL7 Message Sent Built by platform
-        .transform(HL7.ack())
-         // This would enable persistence of the ACK
+          .routeId("hl7Admissions")
+          //Logging
+          //.to("direct:logging")
+          // set Auditing Properties
+          // ${date:now:dd-MM-yyyy HH:mm}
+          .setProperty("processingtype").constant("data")
+          .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+          .setProperty("industrystd").constant("HL7")
+          .setProperty("messagetrigger").constant("ADT")
+          .setProperty("componentname").simple("${routeId}")
+          .setProperty("processname").constant("Input")
+          // iDAAS DataHub Processing
+          .wireTap("direct:auditing")
+          // Send to Topic
+          .to("kafka:MCTN_MMS_ADT?brokers=localhost:9092")
+          //Response to HL7 Message Sent Built by platform
+          .transform(HL7.ack())
+          // This would enable persistence of the ACK
     ;
 
     // ORM
     from("netty4:tcp://0.0.0.0:10002?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
-      .routeId("hl7Orders")
-      // set Auditing Properties
-      .setProperty("processingtype").constant("Data")
-      .setProperty("industrystd").constant("HL7")
-      .setProperty("messagetrigger").constant("ORM")
-      .setProperty("component").constant("ORMReceive")
-      .setProperty("processname").constant("Input")
-       // iDAAS DataHub Processing
-       .wireTap("direct:auditing")
-       // Send to Topic
-       .to("kafka:MCTN_MMS_ORM?brokers=localhost:9092")
-       //Response to HL7 Message Sent Built by platform
-       .transform(HL7.ack())
-       // This would enable persistence of the ACK
+        .routeId("hl7Orders")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("HL7")
+        .setProperty("messagetrigger").constant("ORM")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send to Topic
+        .to("kafka:MCTN_MMS_ORM?brokers=localhost:9092")
+        //Response to HL7 Message Sent Built by platform
+        .transform(HL7.ack())
+        // This would enable persistence of the ACK
     ;
 
     // ORU
     from("netty4:tcp://0.0.0.0:10003?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
-      .routeId("hl7Results")
-      // set Auditing Properties
-      .setProperty("processingtype").constant("Data")
-      .setProperty("industrystd").constant("HL7")
-      .setProperty("messagetrigger").constant("ORU")
-      .setProperty("component").constant("ORUReceive")
-      .setProperty("processname").constant("Input")
-      // iDAAS DataHub Processing
-      .wireTap("direct:auditing")
-      // Send to Topic
-      .to("kafka:MCTN_MMS_ORU?brokers=localhost:9092")
-      //Response to HL7 Message Sent Built by platform
-      .transform(HL7.ack())
-      // This would enable persistence of the ACK
+        .routeId("hl7Results")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("HL7")
+        .setProperty("messagetrigger").constant("ORU")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send to Topic
+        .to("kafka:MCTN_MMS_ORU?brokers=localhost:9092")
+        //Response to HL7 Message Sent Built by platform
+        .transform(HL7.ack())
+        // This would enable persistence of the ACK
     ;
 
     // RDE
     from("netty4:tcp://0.0.0.0:10004?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
-      .routeId("hl7Pharmacy")
-      // set Auditing Properties
-      .setProperty("processingtype").constant("Data")
-      .setProperty("industrystd").constant("HL7")
-      .setProperty("messagetrigger").constant("RDE")
-      .setProperty("component").constant("RDEReceive")
-      .setProperty("processname").constant("Input")
-      // iDAAS DataHub Processing
-      .wireTap("direct:auditing")
-      // Send to Topic
-      .to("kafka:MCTN_MMS_RDE?brokers=localhost:9092")
-      //Response to HL7 Message Sent Built by platform
-      .transform(HL7.ack())
-      // This would enable persistence of the ACK
+        .routeId("hl7Pharmacy")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("HL7")
+        .setProperty("messagetrigger").constant("RDE")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send to Topic
+        .to("kafka:MCTN_MMS_RDE?brokers=localhost:9092")
+        //Response to HL7 Message Sent Built by platform
+        .transform(HL7.ack())
+        // This would enable persistence of the ACK
     ;
 
     // MFN
     from("netty4:tcp://0.0.0.0:10005?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
-      .routeId("hl7MasterFiles")
-      // set Auditing Properties
-      .setProperty("processingtype").constant("Data")
-      .setProperty("industrystd").constant("HL7")
-      .setProperty("messagetrigger").constant("MFN")
-      .setProperty("component").constant("MFNReceive")
-      .setProperty("processname").constant("Input")
-      // iDAAS DataHub Processing
-      .wireTap("direct:auditing")
-      // Send to Topic
-      .to("kafka:MCTN_MMS_MFN?brokers=localhost:9092")
-      //Response to HL7 Message Sent Built by platform
-      .transform(HL7.ack())
-    // This would enable persistence of the ACK
+        .routeId("hl7MasterFiles")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("HL7")
+        .setProperty("messagetrigger").constant("MFN")
+        .setProperty("component").simple("{$routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send to Topic
+        .to("kafka:MCTN_MMS_MFN?brokers=localhost:9092")
+        //Response to HL7 Message Sent Built by platform
+        .transform(HL7.ack())
+        // This would enable persistence of the ACK
     ;
-
-    // Left here
 
     // MDM
     from("netty4:tcp://0.0.0.0:10006?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
-       .routeId("hl7MasterDocs")
-       // set Auditing Properties
-       .setProperty("processingtype").constant("Data")
-       .setProperty("industrystd").constant("HL7")
-       .setProperty("messagetrigger").constant("MDM")
-       .setProperty("component").constant("MDMReceive")
-       .setProperty("processname").constant("Input")
-       // iDAAS DataHub Processing
-       .wireTap("direct:auditing")
-       //Send To Topic
-       .to("kafka:MCTN_MMS_MDM?brokers=localhost:9092")
-       //Response to HL7 Message Sent Built by platform
-       .transform(HL7.ack())
-      // This would enable persistence of the ACK
+         .routeId("hl7MasterDocs")
+         // set Auditing Properties
+         .setProperty("processingtype").constant("data")
+         .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+         .setProperty("industrystd").constant("HL7")
+         .setProperty("messagetrigger").constant("MDM")
+         .setProperty("component").simple("${routeId}")
+         .setProperty("processname").constant("Input")
+         // iDAAS DataHub Processing
+         .wireTap("direct:auditing")
+         //Send To Topic
+         .to("kafka:MCTN_MMS_MDM?brokers=localhost:9092")
+         //Response to HL7 Message Sent Built by platform
+         .transform(HL7.ack())
+        // This would enable persistence of the ACK
     ;
 
     // SCH
     from("netty4:tcp://0.0.0.0:10007?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
-       .routeId("hl7Schedule")
-       // set Auditing Properties
-       .setProperty("processingtype").constant("Data")
-       .setProperty("industrystd").constant("HL7")
-       .setProperty("messagetrigger").constant("SCH")
-       .setProperty("component").constant("SCHReceive")
-       .setProperty("processname").constant("Input")
-       // iDAAS DataHub Processing
-       .wireTap("direct:auditing")
-       // Send To Topic
-       .to("kafka:MCTN_MMS_SCH?brokers=localhost:9092")
-       //Response to HL7 Message Sent Built by platform
-       .transform(HL7.ack())
-       // This would enable persistence of the ACK
+        .routeId("hl7Schedule")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("HL7")
+        .setProperty("messagetrigger").constant("SCH")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:MCTN_MMS_SCH?brokers=localhost:9092")
+        //Response to HL7 Message Sent Built by platform
+        .transform(HL7.ack())
+        // This would enable persistence of the ACK
     ;
 
     // VXU
     from("netty4:tcp://0.0.0.0:10008?sync=true&decoder=#hl7Decoder&encoder=#hl7Encoder")
-       .routeId("hl7Vaccination")
-       // set Auditing Properties
-       .setProperty("processingtype").constant("Data")
-       .setProperty("industrystd").constant("HL7")
-       .setProperty("messagetrigger").constant("VXU")
-       .setProperty("component").constant("VXUReceive")
-       .setProperty("processname").constant("Input")
-       // iDAAS DataHub Processing
-       .wireTap("direct:auditing")
-       // Send To Topic
-       .to("kafka:MCTN_MMS_VXU?brokers=localhost:9092")
-       //Response to HL7 Message Sent Built by platform
-       .transform(HL7.ack())
-       // This would enable persistence of the ACK
+        .routeId("hl7Vaccination")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("HL7")
+        .setProperty("messagetrigger").constant("VXU")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:MCTN_MMS_VXU?brokers=localhost:9092")
+        //Response to HL7 Message Sent Built by platform
+        .transform(HL7.ack())
+        // This would enable persistence of the ACK
     ;
 
     /*
@@ -271,12 +284,14 @@ public class CamelConfiguration extends RouteBuilder {
 
     // wireTap to direct and the direct will be leveraged to add all the headers in one place
     from("servlet://fhirrcodesystem")
-      .routeId("FHIRCodeSystem")
-      // set Auditing Properties
-      .setProperty("industrystd").constant("FHIR")
-      .setProperty("messagetrigger").constant("CodeSystem")
-      .setProperty("component").constant("FHIRCodeSystemReceive")
-      .setProperty("processname").constant("Input")
+        .routeId("FHIRCodeSystem")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("CodeSystem")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
       // iDAAS DataHub Processing
       .wireTap("direct:auditing")
       // Send To Topic
@@ -287,87 +302,185 @@ public class CamelConfiguration extends RouteBuilder {
      ;
 
     from("servlet://http://localhost:8888/fhirdiagnosticresult")
-      .routeId("FHIRDiagnosticResult")
-      // set Auditing Properties
-      .setProperty("processingtype").constant("Data")
-      .setProperty("industrystd").constant("FHIR")
-      .setProperty("messagetrigger").constant("DiagnosticResult")
-      .setProperty("component").constant("DiagnosticResultReceive")
-      .setProperty("processname").constant("Input")
-      // iDAAS DataHub Processing
-      .wireTap("direct:auditing")
-      // Send To Topic
-      .to("kafka:IntgrtnFHIRSvr_DiagnosticResult?brokers=localhost:9092")
-      // Invoke External FHIR Server
-      .to("https://localhost:9443/fhir-server/api/v4/DiagnosticResult")
-      //Process Response
+        .routeId("FHIRDiagnosticResult")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("DiagnosticResult")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:IntgrtnFHIRSvr_DiagnosticResult?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/DiagnosticResult")
+        //Process Response
     ;
 
     from("servlet://http://localhost:8888/fhirencounter")
-      .routeId("FHIREncounter")
-       // set Auditing Properties
-       .setProperty("processingtype").constant("Data")
-       .setProperty("industrystd").constant("FHIR")
-       .setProperty("messagetrigger").constant("Encounter")
-       .setProperty("component").constant("EncounterReceive")
-       .setProperty("processname").constant("Input")
-       // iDAAS DataHub Processing
-       .wireTap("direct:auditing")
-       // Send To Topic
-       .to("kafka:IntgrtnFHIRSvr_Encounter?brokers=localhost:9092")
-       // Invoke External FHIR Server
-       .to("https://localhost:9443/fhir-server/api/v4/Encounter")
+        .routeId("FHIREncounter")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Encounter")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:IntgrtnFHIRSvr_Encounter?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Encounter")
         //Process Response
     ;
 
     from("servlet://http://localhost:8888/fhirepisodeofcare")
-      .routeId("FHIREpisodeOfCare")
-      // set Auditing Properties
-      .setProperty("processingtype").constant("Data")
-      .setProperty("industrystd").constant("FHIR")
-      .setProperty("messagetrigger").constant("EpisodeOfCare")
-      .setProperty("component").constant("EpisodeofCareReceive")
-      .setProperty("processname").constant("Input")
-      // iDAAS DataHub Processing
-      .wireTap("direct:auditing")
-      // Send To Topic
-      .to("kafka:IntgrtnFHIRSvr_EpisodeOfCare?brokers=localhost:9092")
-      // Invoke External FHIR Server
-      .to("https://localhost:9443/fhir-server/api/v4/EpisodeOfCare")
-      //Process Response
+        .routeId("FHIREpisodeOfCare")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("EpisodeOfCare")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:IntgrtnFHIRSvr_EpisodeOfCare?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/EpisodeOfCare")
+        //Process Response
     ;
 
     // left off here
 
     from("servlet://http://localhost:8888/fhirmedicationrequest")
-      .routeId("FHIRMedicationRequest")
-
+        .routeId("FHIRMedicationRequest")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("MedicationRequest")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:IntgrtnFHIRSvr_MedicationRequest?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/MedicationRequest")
+        //Process Response
     ;
 
     from("servlet://http://localhost:8888/fhirmedicationstatement")
-      .routeId("FHIRMedicationStatement")
-
+        .routeId("FHIRMedicationStatement")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("MedicationStatement")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:IntgrtnFHIRSvr_MedicationStatement?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/MedicationStatement")
+        //Process Response
     ;
 
     from("servlet://http://localhost:8888/fhirobservation")
-      .routeId("FHIRObservation")
-
+        .routeId("FHIRObservation")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Observation")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:IntgrtnFHIRSvr_Observation?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Observation")
+        //Process Response
     ;
 
     from("servlet://http://localhost:8888/fhirorder")
-      .routeId("FHIROrder")
+        .routeId("FHIROrder")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Order")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:IntgrtnFHIRSvr_Observation?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Order")
+    //Process Response
     ;
 
     from("servlet://http://localhost:8888/fhirpatient")
-      .routeId("FHIRPatient")
+        .routeId("FHIRPatient")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Patient")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:IntgrtnFHIRSvr_Observation?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Patient")
+        //Process Response
     ;
 
     from("servlet://http://localhost:8888/fhirprocedure")
-      .routeId("FHIRProcedure")
+        .routeId("FHIRProcedure")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Procedure")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:IntgrtnFHIRSvr_Observation?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Procedure")
+        //Process Response
     ;
 
     from("servlet://http://localhost:8888/fhirschedule")
-      .routeId("FHIRSchedule")
+        .routeId("FHIRSchedule")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Schedule")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:IntgrtnFHIRSvr_Observation?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Schedule")
+        //Process Response
     ;
 
     /*
@@ -382,6 +495,7 @@ public class CamelConfiguration extends RouteBuilder {
     /*
      *   ADT Transactions from Sending App By Facility
      *   to Sending App By Message Type
+     *   to Facility By Message Type
      *   to Enterprise by Message Type
      */
     from("kafka: MCTN_MMS_ADT?brokers=localhost:9092")
@@ -394,6 +508,9 @@ public class CamelConfiguration extends RouteBuilder {
        // Enterprise Message By Type
        .to("kafka:ENT_ADT?brokers=localhost:9092")
     ;
+
+    // Ensure to add the Facility By Message Type to ALL HL7 v2 middle tier
+
 
     /*
      *   ORM Transactions from Sending App By Facility
