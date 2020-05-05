@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <img src="../../../images/general/Logo-RedHat-A-Color-RGB.png" height="75" width="175"/>
     <meta charset="UTF-8">
     <title>Getting Started with AMQ-Streams</title>
 </head>
 <body>
-<img src="../../../images/general/Logo-RedHat-A-Color-RGB.png" height="75" width="175"/>
+
 <p>
 These details were taken directly from <a href="https://kafka.apache.org/quickstart">https://kafka.apache.org/quickstart</a> All we have done is put some
 specifics around our implementation.. For this example the user name is developer and the directory where AMQ-Streams is installed is
@@ -20,46 +21,10 @@ Download the latest source code from Red hat:
     </a>
 </p>
 
-<h2>Starting Kafka</h2>
-<p>
-    1.  Unzip the file into the directory (for our example and all the scripts we will show it is
-        /Users/developer/RedHatTech/kafka_2.12-2.4.0.redhat-00005)
-    2.  Start ZooKeeper
-        bin/zookeeper-server-start.sh config/zookeeper.properties &
-    3.  Open a New Terminal window
-    4.  Change directory to /Users/developer/RedHatTech/kafka_2.12-2.4.0.redhat-00005
-    5.  Start up Kafka
-        bin/kafka-server-start.sh config/server.properties &
-
-Thats it - Kafka is running and ready now, there is no UI or Web UI. However, you could download a few different releases through Git Hub or other sources.
-</p>
-
-<h2>Creating Topics</h2>
-<p>
-Now, lets create some topics. We use a LOT of topics in Connect Clinical so we are going to just
-demonstrate a few.
-
-Please keep in mind this is ONLY reference for a local development/testing environment
-
-    1.  Open up a Command Window and Change Directory to /Users/developer/RedHatTech/kafka_2.12-2.4.0.redhat-00005
-    2.  Create a Topic or a Few!!
-            bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic iDAAS_opsMgmt_Errors &
-            bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic iDAAS_opsMgmt_ProcessedTransactions &
-            bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic iDAAS_opsMgmt_Errors &
-            bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic opsMgmt_HL7_RcvdTrans &
-            bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic opsMgmt_FHIR_RcvdTrans &
-            bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic opsMgmt_FHIR_RcvdTrans &
-            bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic opsMgmt_ValidationIssues &
-    3.  List The Topics
-            bin/kafka-topics.sh --list --bootstrap-server localhost:9092
-</p>
-
-<h2>Delete A Topic</h2>
-<p>
-    1.  Open up a Command Window and Change Directory to /Users/developer/RedHatTech/kafka_2.12-2.4.0.redhat-00005
-    2.  Delete a Topic or a Few!!
-            bin/kafka-topics.sh --delete --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic opsMgmt_HL7_RcvdTrans &
-</p>
+<a href="GettingStarted-Guide.html" target="_blank">Installing Kafka</a><br>
+<a href="StartingKafka.html" target="_blank">Starting Kafka</a><br>
+<a href="CreatingiDAASKafkaTopics.html" target="_blank">Creating Kafka</a><br>
+<a href="DeletingTopics.html" target="_blank">Deleting Kafka</a><br>
 
 
 </body>

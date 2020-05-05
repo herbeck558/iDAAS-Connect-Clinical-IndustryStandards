@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <img src="../../../images/general/Logo-RedHat-A-Color-RGB.png" height="75" width="175"/>
+    <meta charset="UTF-8">
+    <title>Creating iDAAS Specific Kafka Topics</title>
+</head>
+<body>
+
+<h2>Creating Topics</h2>
+<p>
+    Now, lets create some topics. We use a LOT of topics in Connect Clinical so we are going to just
+    demonstrate a few.
+
+    Please keep in mind this is ONLY reference for a local development/testing environment
+
+    1.  Open up a Command Window and Change Directory to /Users/developer/RedHatTech/kafka_2.12-2.4.0.redhat-00005
+    2.  Create a Topic or a Few!!
+    bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic iDAAS_test &
+
+    There is also a script in the platform-scripts directory named kafkacmd_topic_createiDAAS.sh, this creates ALL the needed topics.
+
+    3.  List The Topics
+    bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+</p>
+</body>
+</html>
