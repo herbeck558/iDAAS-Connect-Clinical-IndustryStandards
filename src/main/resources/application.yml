@@ -42,7 +42,7 @@ logging:
 #Updated Servlet endpoint
 # localhost://8080
 # default is /camel/*
-camel.component.servlet.mapping.context-path: /fhir/*
+camel.component.servlet.mapping.context-path: /idaas/*
 
 # MLLP Ports
 mllp-settings:
@@ -56,8 +56,9 @@ mllp-settings:
   VaccinationPort:
 
 # Kafka
-kafkasettings.hostvalue: 0.0.0.0
-kafkasettings.portnumber: 9032
+kafka-settings:
+  hostvalue: 0.0.0.0
+  portnumber: 9032
 
 # FHIR Server
 FHIRServerSettings:

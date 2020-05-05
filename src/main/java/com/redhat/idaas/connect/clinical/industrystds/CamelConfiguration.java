@@ -364,7 +364,6 @@ public class CamelConfiguration extends RouteBuilder {
         //Process Response
     ;
 
-    // left off here
 
     from("servlet://http://localhost:8888/fhirmedicationrequest")
         .routeId("FHIRMedicationRequest")
@@ -500,23 +499,20 @@ public class CamelConfiguration extends RouteBuilder {
     ;
 
     /*
-    *   Middle Tier
-    *   Move Transactions and enable the Clinical Data Enterprise Integration Pattern
-    *   HL7 v2
-    *   1. from Sending App By Facility
-    *   2. to Sending App By Message Type
-    *   3. to Facility By Message Type
-    *   4. to Enterprise by Message Type
-    *   FHIR
-    *   1. to Enterprise by Message Type
-    */
+     *   Middle Tier
+     *   Move Transactions and enable the Clinical Data Enterprise Integration Pattern
+     *   HL7 v2
+     *   1. from Sending App By Facility
+     *   2. to Sending App By Message Type
+     *   3. to Facility By Message Type
+     *   4. to Enterprise by Message Type
+     *   FHIR
+     *   1. to Enterprise by Message Type
+     */
 
     /*
      *    HL7v2 ADT
      */
-
-    // start here
-    //.setProperty("auditdetails").constant("ADT message received")
 
     from("kafka: MCTN_MMS_ADT?brokers=localhost:9092")
        .routeId("ADT-MiddleTier")
@@ -527,6 +523,7 @@ public class CamelConfiguration extends RouteBuilder {
        .setProperty("messagetrigger").constant("ADT")
        .setProperty("component").simple("${routeId}")
        .setProperty("processname").constant("MTier")
+       .setProperty("auditdetails").constant("ADT to Enterprise By Sending App By Data Type middle tier")
        // iDAAS DataHub Processing
        .wireTap("direct:auditing")
        // Enterprise Message By Sending App By Type
@@ -538,6 +535,7 @@ public class CamelConfiguration extends RouteBuilder {
        .setProperty("messagetrigger").constant("ADT")
        .setProperty("component").simple("${routeId}")
        .setProperty("processname").constant("MTier")
+       .setProperty("auditdetails").constant("ADT to Facility By Sending App By Data Type middle tier")
        // iDAAS DataHub Processing
        .wireTap("direct:auditing")
        // Facility By Type
@@ -549,6 +547,7 @@ public class CamelConfiguration extends RouteBuilder {
        .setProperty("messagetrigger").constant("ADT")
        .setProperty("component").simple("${routeId}")
        .setProperty("processname").constant("MTier")
+       .setProperty("auditdetails").constant("ADT to Enterprise By Sending App By Data Type middle tier")
        // iDAAS DataHub Processing
        .wireTap("direct:auditing")
        // Enterprise Message By Type
@@ -567,6 +566,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("ORM")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("ORM to Enterprise Sending App By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Enterprise Message By Sending App By Type
@@ -578,6 +578,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("ORM")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("ORM to Facility By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Facility By Type
@@ -589,6 +590,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("ORM")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("ADT to Enterprise By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Entrprise Message By Type
@@ -607,6 +609,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("ORU")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("ORU to Enterprise Sending App By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Enterprise Message By Sending App By Type
@@ -618,6 +621,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("ORU")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("ORU Facility By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Facility By Type
@@ -629,6 +633,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("ORU")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("ORU to Enterprise By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Entrprise Message By Type
@@ -646,6 +651,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("SCH")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("SCH to Sending App By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Enterprise Message By Sending App By Type
@@ -657,6 +663,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("SCH")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("SCH Facility By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Facility By Type
@@ -668,6 +675,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("SCH")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("SCH to Enterprise By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Entrprise Message By Type
@@ -685,6 +693,7 @@ public class CamelConfiguration extends RouteBuilder {
          .setProperty("messagetrigger").constant("RDE")
          .setProperty("component").simple("${routeId}")
          .setProperty("processname").constant("MTier")
+         .setProperty("auditdetails").constant("RDE Sending App By Data Type middle tier")
          // iDAAS DataHub Processing
          .wireTap("direct:auditing")
          // Enterprise Message By Sending App By Type
@@ -696,6 +705,7 @@ public class CamelConfiguration extends RouteBuilder {
          .setProperty("messagetrigger").constant("RDE")
          .setProperty("component").simple("${routeId}")
          .setProperty("processname").constant("MTier")
+         .setProperty("auditdetails").constant("RDE Facility By Data Type middle tier")
          // iDAAS DataHub Processing
          .wireTap("direct:auditing")
          // Facility By Type
@@ -707,15 +717,7 @@ public class CamelConfiguration extends RouteBuilder {
          .setProperty("messagetrigger").constant("RDE")
          .setProperty("component").simple("${routeId}")
          .setProperty("processname").constant("MTier")
-         // iDAAS DataHub Processing
-         .wireTap("direct:auditing")
-         // set Auditing Properties
-         .setProperty("processingtype").constant("data")
-         .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
-         .setProperty("industrystd").constant("HL7")
-         .setProperty("messagetrigger").constant("RDE")
-         .setProperty("component").simple("${routeId}")
-         .setProperty("processname").constant("MTier")
+         .setProperty("auditdetails").constant("RDE Enterprise By Data Type middle tier")
          // iDAAS DataHub Processing
          .wireTap("direct:auditing")
          // Entrprise Message By Type
@@ -733,6 +735,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("MDM")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("MDM Sending App By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Enterprise Message By Sending App By Type
@@ -744,6 +747,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("MDM")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("MDM Facility By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Facility By Type
@@ -755,6 +759,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("MDM")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("MDM to Enterprise By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Entrprise Message By Type
@@ -772,6 +777,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("MFN")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("MFN Sending App By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Enterprise Message By Sending App By Type
@@ -783,6 +789,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("MFN")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("MFN Facility By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Facility By Type
@@ -794,6 +801,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("MFN")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("ADT to Enterprise By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Entrprise Message By Type
@@ -811,6 +819,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("VXU")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("VXU Sending App By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Enterprise Message By Sending App By Type
@@ -822,6 +831,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("VXU")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("VXU By Sending App By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Facility By Type
@@ -833,6 +843,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("messagetrigger").constant("VXU")
         .setProperty("component").simple("${routeId}")
         .setProperty("processname").constant("MTier")
+        .setProperty("auditdetails").constant("VXU Enterprise By Data Type middle tier")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Entrprise Message By Type
@@ -840,6 +851,8 @@ public class CamelConfiguration extends RouteBuilder {
         //.to("kafka:opsMgmt_ProcessedTransactions?brokers={{kafkasettings.hostvalue}}:{{kafkasettings.portnumber}}")
     ;
 
+    //Left off here
+    // .setProperty("auditdetails").constant("ADT to Enterprise Sending App By Data Type middle tier")
     /*
      *   FHIR IntgrtnFHIRSvr_CodeSystem
      */
