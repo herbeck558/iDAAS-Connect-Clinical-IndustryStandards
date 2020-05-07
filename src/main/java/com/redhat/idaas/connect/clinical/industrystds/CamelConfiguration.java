@@ -547,7 +547,7 @@ public class CamelConfiguration extends RouteBuilder {
        .setProperty("auditdetails").constant("ADT to Enterprise By Sending App By Data Type middle tier")
        .wireTap("direct:auditing")
        // Enterprise Message By Type
-       .to("kafka:ENT_ADT?brokers=localhost:9092")
+       .to("kafka:Ent_ADT?brokers=localhost:9092")
     ;
 
     /*
@@ -587,7 +587,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("ADT to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Enterprise Message By Type
-        .to("kafka:ENT_ORM?brokers=localhost:9092")
+        .to("kafka:Ent_ORM?brokers=localhost:9092")
     ;
 
     /*
@@ -627,7 +627,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("ORU to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Entrprise Message By Type
-        .to("kafka:ENT_ORU?brokers=localhost:9092")
+        .to("kafka:Ent_ORU?brokers=localhost:9092")
     ;
     /*
      *   HL7v2 SCH
@@ -666,7 +666,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("SCH to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Entrprise Message By Type
-        .to("kafka:ENT_SCH?brokers=localhost:9092")
+        .to("kafka:Ent_SCH?brokers=localhost:9092")
     ;
     /*
      *   HL7v2 RDE
@@ -705,7 +705,7 @@ public class CamelConfiguration extends RouteBuilder {
          .setProperty("auditdetails").constant("RDE Enterprise By Data Type middle tier")
          .wireTap("direct:auditing")
          // Entrprise Message By Type
-        .to("kafka:ENT_RDE?brokers=localhost:9092")
+        .to("kafka:Ent_RDE?brokers=localhost:9092")
     ;
     /*
      *   HL7v2 MDM
@@ -745,7 +745,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("MDM to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Entrprise Message By Type
-        .to("kafka:ENT_MDM?brokers=localhost:9092")
+        .to("kafka:Ent_MDM?brokers=localhost:9092")
     ;
     /*
      *   HL7v2 MFN
@@ -786,7 +786,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("ADT to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Entrprise Message By Type
-        .to("kafka:ENT_MFN?brokers=localhost:9092")
+        .to("kafka:Ent_MFN?brokers=localhost:9092")
     ;
     /*
      *   HL7v2 VXU
@@ -825,7 +825,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("VXU Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Entrprise Message By Type
-        .to("kafka:ENT_VXU?brokers=localhost:9092")
+        .to("kafka:Ent_VXU?brokers=localhost:9092")
         //.to("kafka:opsMgmt_ProcessedTransactions?brokers={{kafkasettings.hostvalue}}:{{kafkasettings.portnumber}}")
     ;
     /*
@@ -843,7 +843,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("CodeSystem to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Enterprise Message By Type
-        .to("kafka:ENT_IntgrtnFHIRSvr_CodeSystem?brokers=localhost:9092")
+        .to("kafka:Ent_IntgrtnFHIRSvr_CodeSystem?brokers=localhost:9092")
     ;
     from("kafka:IntgrtnFHIRSvr_DiagnosticResult?brokers=localhost:9092")
         .routeId("DiagnosticResult-MiddleTier")
@@ -857,7 +857,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("DiagnosticResult to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Enterprise Message By Type
-        .to("kafka:ENT_IntgrtnFHIRSvr_DiagnosticResult?brokers=localhost:9092")
+        .to("kafka:Ent_IntgrtnFHIRSvr_DiagnosticResult?brokers=localhost:9092")
     ;
     from("kafka:IntgrtnFHIRSvr_Encounter?brokers=localhost:9092")
         .routeId("Encounter-MiddleTier")
@@ -871,7 +871,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("Encounter to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Enterprise Message By Type
-        .to("kafka:ENT_IntgrtnFHIRSvr_Encounter?brokers=localhost:9092")
+        .to("kafka:Ent_IntgrtnFHIRSvr_Encounter?brokers=localhost:9092")
     ;
     from("kafka:IntgrtnFHIRSvr_EpisodeOfCare?brokers=localhost:9092")
         .routeId("EpisodeOfCare-MiddleTier")
@@ -884,7 +884,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("EpisodeOfCare to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Enterprise Message By Type
-        .to("kafka:ENT_IntgrtnFHIRSvr_EpisodeOfCare?brokers=localhost:9092")
+        .to("kafka:Ent_IntgrtnFHIRSvr_EpisodeOfCare?brokers=localhost:9092")
     ;
     from("kafka:IntgrtnFHIRSvr_Immunization?brokers=localhost:9092")
        .routeId("Immunization-MiddleTier")
@@ -897,7 +897,7 @@ public class CamelConfiguration extends RouteBuilder {
        .setProperty("auditdetails").constant("Immunization to Enterprise By Data Type middle tier")
        .wireTap("direct:auditing")
        // Enterprise Message By Type
-       .to("kafka:ENT_IntgrtnFHIRSvr_Immunization?brokers=localhost:9092")
+       .to("kafka:Ent_IntgrtnFHIRSvr_Immunization?brokers=localhost:9092")
     ;
     from("kafka:IntgrtnFHIRSvr_MedicationRequest?brokers=localhost:9092")
         .routeId("MedicationRequest-MiddleTier")
@@ -910,7 +910,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("MedicationRequest to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Enterprise Message By Type
-        .to("kafka:ENT_IntgrtnFHIRSvr_MedicationRequest?brokers=localhost:9092")
+        .to("kafka:Ent_IntgrtnFHIRSvr_MedicationRequest?brokers=localhost:9092")
     ;
     from("kafka:IntgrtnFHIRSvr_MedicationStatement?brokers=localhost:9092")
         .routeId("MedicationStatement-MiddleTier")
@@ -924,7 +924,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("MedicationStatement to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Enterprise Message By Type
-        .to("kafka:ENT_IntgrtnFHIRSvr_MedicationStatement?brokers=localhost:9092")
+        .to("kafka:Ent_IntgrtnFHIRSvr_MedicationStatement?brokers=localhost:9092")
     ;
     from("kafka:IntgrtnFHIRSvr_Observation?brokers=localhost:9092")
         .routeId("Observation-MiddleTier")
@@ -938,7 +938,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("Observation to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Enterprise Message By Type
-        .to("kafka:ENT_IntgrtnFHIRSvr_Observation?brokers=localhost:9092")
+        .to("kafka:Ent_IntgrtnFHIRSvr_Observation?brokers=localhost:9092")
     ;
     from("kafka:IntgrtnFHIRSvr_Order?brokers=localhost:9092")
         .routeId("Order-MiddleTier")
@@ -952,7 +952,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("Order to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Enterprise Message By Type
-        .to("kafka:ENT_IntgrtnFHIRSvr_Order?brokers=localhost:9092")
+        .to("kafka:Ent_IntgrtnFHIRSvr_Order?brokers=localhost:9092")
     ;
     from("kafka:IntgrtnFHIRSvr_Patient?brokers=localhost:9092")
        .routeId("Patient-MiddleTier")
@@ -966,7 +966,7 @@ public class CamelConfiguration extends RouteBuilder {
        .setProperty("auditdetails").constant("Patient to Enterprise By Data Type middle tier")
        .wireTap("direct:auditing")
        // Enterprise Message By Type
-       .to("kafka:ENT_IntgrtnFHIRSvr_Patient?brokers=localhost:9092")
+       .to("kafka:Ent_IntgrtnFHIRSvr_Patient?brokers=localhost:9092")
     ;
     from("kafka:IntgrtnFHIRSvr_Procedure?brokers=localhost:9092")
        .routeId("Procedure-MiddleTier")
@@ -980,7 +980,7 @@ public class CamelConfiguration extends RouteBuilder {
        .setProperty("auditdetails").constant("Procedure to Enterprise By Data Type middle tier")
        .wireTap("direct:auditing")
        // Enterprise Message By Type
-       .to("kafka:ENT_IntgrtnFHIRSvr_Procedure?brokers=localhost:9092")
+       .to("kafka:Ent_IntgrtnFHIRSvr_Procedure?brokers=localhost:9092")
     ;
     from("kafka:IntgrtnFHIRSvr_Schedule?brokers=localhost:9092")
         .routeId("Schedule-MiddleTier")
@@ -994,7 +994,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setProperty("auditdetails").constant("Schedule to Enterprise By Data Type middle tier")
         .wireTap("direct:auditing")
         // Enterprise Message By Type
-        .to("kafka:ENT_IntgrtnFHIRSvr_Procedure?brokers=localhost:9092")
+        .to("kafka:Ent_IntgrtnFHIRSvr_Procedure?brokers=localhost:9092")
     ;
   }
 }

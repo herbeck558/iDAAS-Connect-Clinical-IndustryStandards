@@ -66,18 +66,18 @@ bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-fac
 ## FHIR
 ## Enterprise by Message Trigger
 ## Application: Integration with Partner FHIR Server
-bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ENT_IntgrtnFHIRSvr_CodeSystem &
-bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ENT_IntgrtnFHIRSvr_DiagnosticResult &
-bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ENT_IntgrtnFHIRSvr_Encounter &
-bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ENT_IntgrtnFHIRSvr_EpisodeOfCare &
-bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ENT_IntgrtnFHIRSvr_Immunization &
-bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ENT_IntgrtnFHIRSvr_MedicationRequest &
-bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ENT_IntgrtnFHIRSvr_MedicationStatement &
-bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ENT_IntgrtnFHIRSvr_Observation &
-bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ENT_IntgrtnFHIRSvr_Order &
-bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ENT_IntgrtnFHIRSvr_Patient &
-bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ENT_IntgrtnFHIRSvr_Procedure &
-bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ENT_IntgrtnFHIRSvr_Schedule &
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic Ent_IntgrtnFHIRSvr_CodeSystem &
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic Ent_IntgrtnFHIRSvr_DiagnosticResult &
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic Ent_IntgrtnFHIRSvr_Encounter &
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic Ent_IntgrtnFHIRSvr_EpisodeOfCare &
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic Ent_IntgrtnFHIRSvr_Immunization &
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic Ent_IntgrtnFHIRSvr_MedicationRequest &
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic Ent_IntgrtnFHIRSvr_MedicationStatement &
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic Ent_IntgrtnFHIRSvr_Observation &
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic Ent_IntgrtnFHIRSvr_Order &
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic Ent_IntgrtnFHIRSvr_Patient &
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic Ent_IntgrtnFHIRSvr_Procedure &
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic Ent_IntgrtnFHIRSvr_Schedule &
 ## FHIR
 ## Enterprise Application by Message Trigger
 ## Application: MMS
