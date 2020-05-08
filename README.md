@@ -51,22 +51,27 @@ Here are some specific details for all the demonstrations developed:
 
 Here are some of the scenarios this component has developed into it for ease of demonstrating.
 
-
 # Building and Running
-
 This code can be built (and will be run) with the following command:
-
 mvn clean install
 
 To repackage the solution to a single jar:
-
 mvn package
 
+To Run The Platform:
+1. Make sure Kafka is started (start script is in the platform-scripts directory)
+2. Ensure Topics are in place (you can run the kafkacmd-topics-list in the platform-scripts directory).
+if there a topics then you should be ok to run. If you are concerned or no topics are listed, then run the 
+kafkacmd_topics_createiDAAS script in the platform-scripts directory.
+3. java -jar <jarfile.jar> 
+
 # Testing Data
-
 After building, running and/or deploying implementors might want to test. We have included industry samples for everyone to leverage.
+Within the solution in the src/test/data there are two directories test-hl7 and test-fhir.
 
-Within the solutiin in the src/test/data there are two directories test-hl7 and test-fhir.
+1. You can leverage the files within test-hl7 messages to send data via ANY MLLP client. 
+2. You can leverage the files within test-fhir messages to post these files using postman or other
+common tooling for testing endpoints.
 
 # Containers Based - Openshift (where possible) 
 It is assumed that:
