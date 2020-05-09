@@ -13,25 +13,21 @@ The problem of healthcare connectivity and data enablement has been around for d
 * [HL7 v2 Message Receivers](https://www.hl7.org/implement/standards/product_brief.cfm?product_id=185 "HL7 v2 Message Receivers") - Support for ADT, ORM, ORU, RDE, SCH, MFN, MDM and VXU message types. Connected Clinical does not care about specific HL7 version, its has been tested from version 2.1 through 2.8.
 * [FHIR Clinical Receivers](https://www.hl7.org/fhir/ "HL7 FHIR") - Support for FHIR Clinical is currently being implemented. The platform will focus on delivery R4 (4.01) support to align with the CMS guidance on Interoperability and Patient Access. 
 
+As part of the platform we have designed an enterprise integration pattern called Healthcare Data Distribution Enterprise Integration Pattern. This pattern is very important as anyone thinks about how to leverage ANY healthcare data. When and where possible the platform not only audit the transavtions for other activities but it also makes at least one copy of it available for varying needs of healthcare systems. 
+
 Here is a visual on the iDAAS Platform and all its specific components:
 <p align="center" >
-<img src="content/images/iDAAS-Platform/iDAAS%20Platform%20-%20iDAAS%20Connect%20and%20Vendor%20FHIR%20Modules.png" alt="iDAAS Component Design" 
-width="600" height="600" />
+<img src="https://github.com/RedHat-Healthcare/iDAAS/blob/master/content/images/iDAAS-Platform/iDAASPlatform-HCDD-EIP.png" alt="iDAAS Component Design" 
+width="900" height="600" />
 </p>
 
-# Other Contributions within Source
-as dscussed in the iDAAS base repository this component has additional contributions in order to assist. In order to try and not just put the software out there we also wanted to help development and implementation as well. 
+## Other Contributions within Source
+As discussed in the iDAAS base repository this component has additional contributions in order to assist. In order to try and not just put the software out there we also wanted to help development and implementation as well. 
 To help support these areas we have included additional artifacts within specific directories. 
 
-* content: This directory is intended to maintain any content published about the platform. Within this directory is the Development documentation and implementation guides along with images that are leveraged within the 
-content or site to help ensure everyone has all the available materials.
+* content: This directory is intended to maintain any content published about the specific component. Within this directory is the Development documentation and implementation guides. The core images and general base content that we use across all iDAAS components are leveraged within the <a href="https://github.com/RedHat-Healthcare/iDAAS" target="_blank">iDAAS core repository</a> within the content directory.
 * platform-scripts: designed to assist implementation with scripts that can be downloaded and leveraged. 
 It should be understood that these scripts will need to be tweaked, mostly to address base implemented directories of solutions. These scripts currently cover A-MQ and Kafka. The intent for them is to be able to start the products and enable implementors to quickly get the products running. 
-
-# Development IDE
-The iDAAS (Intelligent Data as a Service) Clinical platform was initially developed using Eclipse. While this can still be used to update code, the team wanted to share its has transitioned to the following Development IDE and plugins: 
-
-* IntelliJ Community IDE with the following plugins: Apache Camel Plugin, Big Data Tools Plugin and Kubernetes Plugin
 
 # Practical Scenarios This Component Addrresses
 As mentioned in the <a href="https://github.com/RedHat-Healthcare/iDAAS" target="_blank">iDAAS Repository</a> in much greater detail the Red Hat Healthcare team has created a fictious company named Care Delivery Corporation US (CADuCeUS).
@@ -51,15 +47,19 @@ The following scenarios as what iDAAS Connect Clinical Industry Standards platfo
 
 * HL7 v2 message processing of the most commonly used transactions. There is NO version, vendor or other limitation (like Z segment processing)
 * FHIR R4 processing, currently there are almost 30 FHIR resources supported.
+* Enterprise and/or Organization and/or Application level by message type data distribution of data leveraging the HCDD-EIP.
 
-All of these use cases/sceanrios work natively with the CDDEIP (Clinical Data Distribution Enterprise Integration Pattern). This pattern automatically moves data from the specific connected data type.
+# Building, Running and Testing
 
-# Building and Running
+## Building
 This code can be built (and will be run) with the following command:
 mvn clean install
 
+## Packaging
 To repackage the solution to a single jar:
 mvn package
+
+## Running
 
 To Run The Platform:
 1. Make sure Kafka is started (start script is in the platform-scripts directory)
@@ -68,7 +68,7 @@ if there a topics then you should be ok to run. If you are concerned or no topic
 kafkacmd_topics_createiDAAS script in the platform-scripts directory.
 3. java -jar <jarfile.jar> 
 
-# Testing Data
+## Testing Data
 After building, running and/or deploying implementors might want to test. We have included industry samples for everyone to leverage.
 Within the solution in the src/test/data there are two directories test-hl7 and test-fhir.
 
@@ -76,9 +76,14 @@ Within the solution in the src/test/data there are two directories test-hl7 and 
 2. You can leverage the files within test-fhir messages to post these files using postman or other
 common tooling for testing endpoints.
 
-# Containers Based - Openshift (where possible) 
-It is assumed that:
+## Containers Based - Where Possible 
+As we have discussed the iDAAS platform we have taken a very modern cloud native approach to everything. As you will see when you package the solution they are very small < 80 megs and have a ton of features. However, it is important to know that some components CANNOT be run as containers accurately. Specifically, the HL7 connections cannot be accurateot scaled as containers as they are long running server socket based protocols. Since this plaform has HL7v2 and FHIR bundled into the same solution you will just need to be aware of this.
 
+### Docker
+Please feel free to visit our Docker organization at <a href="https://hub.docker.com/orgs/redhathealthcare" target="_blank">
+Docker - Red Hat Healthcare Org</a>
+
+### OpenShift
 OpenShift platform is already running, if not you can find details how to Install OpenShift at your site.
 Your system is configured for Fabric8 Maven Workflow, if not you can find a Get Started Guide
 The example can be built and run on OpenShift using a single goal:
@@ -105,6 +110,3 @@ Then create the quickstart template:
 
 oc create -f https://raw.githubusercontent.com/jboss-fuse/application-templates/GA/quickstarts/spring-boot-camel-template.json
 Now when you use "Add to Project" button in the OpenShift console, you should see a template for this quickstart.
-
-# Other Related GitHub Repositories for Connected Health / iDAAS Platform Components
-As mentioned above iDAAS is a platform and is built in a very modular manner. We will be releasing other public Git Hub repositories that will enable additional extensibility.
