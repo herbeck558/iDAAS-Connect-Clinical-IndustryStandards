@@ -1,6 +1,5 @@
-# Data Enablement: iDAAS Connect Clinical Industry Standards
-
-As you read, or can find on the <a href="https://github.com/RedHat-Healthcare/iDAAS" target="_blank">iDAAS main repository</a> we discussed the need for what we called the Five R's, here are the two R's this component helps us achieve:
+# iDAAS Connect Clinical Industry Standards
+iDAAS Connect is all about connecting to data sources or protocols. In this specific case iDAAS Connect Clinical Industry Standards hopes to define iDAAS connecting to clinical data coming from industry stanards. As you read, or can find on the <a href="https://github.com/RedHat-Healthcare/iDAAS" target="_blank">iDAAS main repository</a> we discussed the need for what we called the Five R's, here are the two R's this component helps us achieve:
 
 * Receive: receive data from various formats. We have branded this capability iDAAS Connect. From receiving data we focus on industry standards and then third party connectivity. Industry standards support include HL7 v2, FHIR, and EDI Claims. There are potential future plans for  NCPDP and HL7 v3 message support being discussed. From a third party connectivity perspective we focus on building an on-ramp for data to be leveraged within iDAAS for over 75 common protocols like JDBC data sources, File, FTP, SFTP, FTPS, APIs, WSDL, AS400,  Mongo, Kafka, numerous cloud platforms  and many more.
 * Route: enable data to be routed to many sources. For this capability we have focused on building out several specific components such as healthcare event builder (both code and integration) to form the intelligent healthcare data router. In order to demonstrate this, our focus was on building a reusable repeatable enterprise application integration message pattern along with the ability for organizations to build and deliver healthcare even streaming.
@@ -20,7 +19,6 @@ Here is a visual on the iDAAS Platform and all its specific components:
 width="600" height="600" />
 </p>
 
-
 # Other Contributions within Source
 as dscussed in the iDAAS base repository this component has additional contributions in order to assist. In order to try and not just put the software out there we also wanted to help development and implementation as well. 
 To help support these areas we have included additional artifacts within specific directories. 
@@ -36,8 +34,7 @@ The iDAAS (Intelligent Data as a Service) Clinical platform was initially develo
 * IntelliJ Community IDE with the following plugins: Apache Camel Plugin, Big Data Tools Plugin and Kubernetes Plugin
 
 # Practical Scenarios This Component Addrresses
-
-To support ANY developed artifcats the Red Hat Healthcare team has created a fictious company named Care Delivery Corporation US (CADuCeUS). Care Delivery Corp. US is intended to help Red Hat Healthcare demonstrate its solutions across all areas of the healthcare marketspace. While Everything associated with Care Delivery Corp US is fictiotious including the software they leverage and are building the industry scenarios and platform usage is driven by real world healthcare ongoing needs.
+As mentioned in the <a href="https://github.com/RedHat-Healthcare/iDAAS" target="_blank">iDAAS Repository</a> in much greater detail the Red Hat Healthcare team has created a fictious company named Care Delivery Corporation US (CADuCeUS).
 
 Here are some specific details for all the demonstrations developed:
 
@@ -48,6 +45,14 @@ Here are some specific details for all the demonstrations developed:
 | Custom Integrated Application | myEHR |
 
 Here are some of the scenarios this component has developed into it for ease of demonstrating.
+
+## Use Cases / Scenarios
+The following scenarios as what iDAAS Connect Clinical Industry Standards platform can help demonstrate.
+
+* HL7 v2 message processing of the most commonly used transactions. There is NO version, vendor or other limitation (like Z segment processing)
+* FHIR R4 processing, currently there are almost 30 FHIR resources supported.
+
+All of these use cases/sceanrios work natively with the CDDEIP (Clinical Data Distribution Enterprise Integration Pattern). This pattern automatically moves data from the specific connected data type.
 
 # Building and Running
 This code can be built (and will be run) with the following command:
