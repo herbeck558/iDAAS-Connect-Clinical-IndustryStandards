@@ -304,6 +304,59 @@ public class CamelConfiguration extends RouteBuilder {
         .to("https://localhost:9443/fhir-server/api/v4/AdverseEvent")
         // Process Response
     ;
+    from("servlet://alergyintollerance")
+        .routeId("FHIRAllergyIntollerance")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("messagetrigger").constant("AllergyInteolerance")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Allergy Intollerance message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_Appointment?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Appointment")
+        // Process Response
+    ;
+    from("servlet://appointment")
+         .routeId("FHIRAppointment")
+         // set Auditing Properties
+         .setProperty("processingtype").constant("data")
+         .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+         .setProperty("industrystd").constant("FHIR")
+         .setProperty("messagetrigger").constant("Appointment")
+         .setProperty("component").simple("${routeId}")
+         .setProperty("processname").constant("Input")
+         .setProperty("auditdetails").constant("Appointment message received")
+         // iDAAS DataHub Processing
+         .wireTap("direct:auditing")
+         // Send To Topic
+         .to("kafka:FHIRSvr_Appointment?brokers=localhost:9092")
+         // Invoke External FHIR Server
+         .to("https://localhost:9443/fhir-server/api/v4/Appointment")
+        // Process Response
+    ;
+    from("servlet://appointmentresponse")
+        .routeId("FHIRAppointmentResponse")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("AppointmentResponse")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Appiintment Response message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_AppointmentResponse?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/AppointmentResponse")
+        // Process Response
+    ;
     from("servlet://careplan")
         .routeId("FHIRCodeSystem")
         // set Auditing Properties
@@ -320,6 +373,24 @@ public class CamelConfiguration extends RouteBuilder {
         .to("kafka:FHIRSvr_CarePlan?brokers=localhost:9092")
         // Invoke External FHIR Server
         .to("https://localhost:9443/fhir-server/api/v4/CarePlan")
+        // Process Response
+    ;
+    from("servlet://careteam")
+        .routeId("FHIRCareTeam")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("CareTeam")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("CareTeam message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_CareTeam?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/CareTeam")
         // Process Response
     ;
     from("servlet://codesystem")
@@ -340,6 +411,24 @@ public class CamelConfiguration extends RouteBuilder {
       .to("https://localhost:9443/fhir-server/api/v4/CodeSystem")
       // Process Response
      ;
+    from("servlet://consent")
+        .routeId("FHIRConsent")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Consent")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Consent message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_Consent?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Consent")
+        // Process Response
+    ;
     from("servlet://clincialimpression")
         .routeId("FHIRCodeSystem")
         // set Auditing Properties
@@ -392,6 +481,42 @@ public class CamelConfiguration extends RouteBuilder {
         .to("kafka:FHIRSvr_Condition?brokers=localhost:9092")
         // Invoke External FHIR Server
         .to("https://localhost:9443/fhir-server/api/v4/Condition")
+        // Process Response
+    ;
+    from("servlet://detectedissue")
+        .routeId("FHIRDetectedIssue")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("DetectedIssue")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Detected Issue message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_DetectedIssue?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/DetectedIssue")
+        // Process Response
+    ;
+    from("servlet://device")
+        .routeId("FHIRDevice")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Device")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Device message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_Device?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Device")
         // Process Response
     ;
     from("servlet://devicerequest")
@@ -448,6 +573,24 @@ public class CamelConfiguration extends RouteBuilder {
         .to("https://localhost:9443/fhir-server/api/v4/DiagnosticResult")
         //Process Response
     ;
+    from("servlet://effectevidencesynthesis")
+        .routeId("FHIREffectEvidenceSynthesis")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("EffectEvidenceSynthesis")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Effect Evidence Synthesis message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_EffectEvidenceSynthesis?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/EffectEvidenceSynthesis")
+        //Process Response
+    ;
     from("servlet://encounter")
         .routeId("FHIREncounter")
         // set Auditing Properties
@@ -484,6 +627,42 @@ public class CamelConfiguration extends RouteBuilder {
         .to("https://localhost:9443/fhir-server/api/v4/EpisodeOfCare")
         //Process Response
     ;
+    from("servlet://evidence")
+        .routeId("FHIREvidence")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Evidence")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Evidence message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_Evidence?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Evidence")
+        //Process Response
+    ;
+    from("servlet://evidencevariable")
+        .routeId("FHIREvidenceVariable")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("EvidenceVariable")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Evidence Variable message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_EvidenceVariable?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/EvidenceVariable")
+        //Process Response
+    ;
     from("servlet://goal")
         .routeId("FHIRGoal")
         // set Auditing Properties
@@ -501,6 +680,24 @@ public class CamelConfiguration extends RouteBuilder {
         // Invoke External FHIR Server
         .to("https://localhost:9443/fhir-server/api/v4/Goal")
         //Process Response
+    ;
+    from("servlet://healthcareservice")
+        .routeId("FHIRHealthcareService")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("HealthcareService")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("HealthcareService message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_HealthcareService?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/HealthcareService")
+        // Process Response
     ;
     from("servlet://imagingstudy")
         .routeId("FHIRImagingStudy")
@@ -520,23 +717,59 @@ public class CamelConfiguration extends RouteBuilder {
         .to("https://localhost:9443/fhir-server/api/v4/ImagingStudy")
         //Process Response
     ;
-    from("servlet://medicationdispense")
-            .routeId("FHIRMedicationDispense")
-            // set Auditing Properties
-            .setProperty("processingtype").constant("data")
-            .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
-            .setProperty("industrystd").constant("FHIR")
-            .setProperty("messagetrigger").constant("MedicationDispense")
-            .setProperty("component").simple("${routeId}")
-            .setProperty("processname").constant("Input")
-            .setProperty("auditdetails").constant("Medication Dispense message received")
-            // iDAAS DataHub Processing
-            .wireTap("direct:auditing")
-            // Send To Topic
-            .to("kafka:FHIRSvr_MedicationDispense?brokers=localhost:9092")
-            // Invoke External FHIR Server
-            .to("https://localhost:9443/fhir-server/api/v4/MedicationDispense")
-    //Process Response
+    from("servlet://location")
+        .routeId("FHIRLocation")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Location")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Location message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_Location?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Location")
+        //Process Response
+    ;
+    from("servlet://measure")
+        .routeId("FHIRMeasure")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Measure")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Measure message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_Measure?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Measure")
+        //Process Response
+    ;
+    from("servlet://measurereport")
+        .routeId("FHIRMeasureReport")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("MeasureReport")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Measure Report message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_MeasureReport?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/MeasureReport")
+        //Process Response
     ;
     from("servlet://medicationrequest")
         .routeId("FHIRMedicationRequest")
@@ -574,7 +807,6 @@ public class CamelConfiguration extends RouteBuilder {
         .to("https://localhost:9443/fhir-server/api/v4/MedicationAdminstration")
         //Process Response
     ;
-
     from("servlet://observation")
         .routeId("FHIRObservation")
         // set Auditing Properties
@@ -593,7 +825,6 @@ public class CamelConfiguration extends RouteBuilder {
         .to("https://localhost:9443/fhir-server/api/v4/Observation")
         //Process Response
     ;
-
     from("servlet://order")
         .routeId("FHIROrder")
         // set Auditing Properties
@@ -610,9 +841,44 @@ public class CamelConfiguration extends RouteBuilder {
         .to("kafka:FHIRSvr_Observation?brokers=localhost:9092")
         // Invoke External FHIR Server
         .to("https://localhost:9443/fhir-server/api/v4/Order")
-    //Process Response
+        //Process Response
     ;
-
+    from("servlet://organization")
+        .routeId("FHIROrganization")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Organization")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Organization message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_Organization?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Organization")
+        //Process Response
+    ;
+    from("servlet://organizationaffiliation")
+        .routeId("FHIROrganizationAffiliation")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("OrganizationAffiliation")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Organization Affiliation message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_OrganizationAffiliation?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/OrganizationAffiliation")
+        //Process Response
+    ;
     from("servlet://patient")
         .routeId("FHIRPatient")
         // set Auditing Properties
@@ -631,7 +897,42 @@ public class CamelConfiguration extends RouteBuilder {
         .to("https://localhost:9443/fhir-server/api/v4/Patient")
         //Process Response
     ;
-
+    from("servlet://person")
+        .routeId("FHIRPerson")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Person")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Person message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_Person?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Person")
+        //Process Response
+    ;
+    from("servlet://practitioner")
+        .routeId("FHIRPractitioner")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Practitioner")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Practitioner message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_Practitioner?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Practitioner")
+        //Process Response
+    ;
     from("servlet://procedure")
         .routeId("FHIRProcedure")
         // set Auditing Properties
@@ -686,6 +987,78 @@ public class CamelConfiguration extends RouteBuilder {
         .to("https://localhost:9443/fhir-server/api/v4/QuestionaireResponse")
         //Process Response
     ;
+    from("servlet://researchelementdefinition")
+        .routeId("FHIRResearcElementhDefinition")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("ResearchElementDefinition")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Research Element Definition message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_ReseacrhElementDefinition?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/ResearchElementDefinition")
+        //Process Response
+    ;
+    from("servlet://researchdefinition")
+        .routeId("FHIRResearchDefinition")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("ResearchDefinition")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Research Definition message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_ResearchDefinition?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/ResearchDefinition")
+        //Process Response
+    ;
+    from("servlet://researchstudy")
+        .routeId("FHIRResearchStudy")
+         // set Auditing Properties
+         .setProperty("processingtype").constant("data")
+         .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+         .setProperty("industrystd").constant("FHIR")
+         .setProperty("messagetrigger").constant("ResearchStudy")
+         .setProperty("component").simple("${routeId}")
+         .setProperty("processname").constant("Input")
+         .setProperty("auditdetails").constant("Research Study message received")
+         // iDAAS DataHub Processing
+         .wireTap("direct:auditing")
+         // Send To Topic
+         .to("kafka:FHIRSvr_ResearchStudy?brokers=localhost:9092")
+         // Invoke External FHIR Server
+         .to("https://localhost:9443/fhir-server/api/v4/ResearchStudy")
+        //Process Response
+    ;
+    from("servlet://researchsubject")
+        .routeId("FHIRResearchSubject")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("ResearchSubject")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Research Subject message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_ResearchSubject?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/ResearchSubject")
+        //Process Response
+    ;
     from("servlet://schedule")
         .routeId("FHIRSchedule")
         // set Auditing Properties
@@ -704,6 +1077,24 @@ public class CamelConfiguration extends RouteBuilder {
         .to("https://localhost:9443/fhir-server/api/v4/Schedule")
         //Process Response
     ;
+    from("servlet://servicerequest")
+        .routeId("FHIRServiceRequest")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("ServiceRequest")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Service Request message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_ServiceRequest?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/ServiceRequest")
+        //Process Response
+    ;
     from("servlet://specimen")
         .routeId("FHIRSpecimen")
         // set Auditing Properties
@@ -720,6 +1111,114 @@ public class CamelConfiguration extends RouteBuilder {
         .to("kafka:FHIRSvr_Specimen?brokers=localhost:9092")
         // Invoke External FHIR Server
         .to("https://localhost:9443/fhir-server/api/v4/Specimen")
+        //Process Response
+    ;
+    from("servlet://substance")
+        .routeId("FHIRSubstance")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("Substance")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Substance message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_Substance?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/Substance")
+        //Process Response
+    ;
+    from("servlet://supplydelivery")
+        .routeId("FHIRSupplyDelivery")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("SupplyDelivery")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Supply Delivery message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_SupplyDelivery?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/SupplyDelivery")
+        //Process Response
+    ;
+    from("servlet://supplyrequest")
+        .routeId("FHIRSupplyRequest")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("SupplyRequest")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Supply Request message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_SupplyRequest?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/SupplyRequest")
+        //Process Response
+    ;
+    from("servlet://testreport")
+        .routeId("FHIRTestReport")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("TestReport")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Test Report message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_TestReport?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/TestReport")
+        //Process Response
+    ;
+    from("servlet://testscript")
+        .routeId("FHIRTestScript")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("TestScript")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Test Script message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_TestScript?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/TestScript")
+        //Process Response
+    ;
+    from("servlet://verificationresult")
+        .routeId("FHIRVerificationResult")
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+        .setProperty("industrystd").constant("FHIR")
+        .setProperty("messagetrigger").constant("VerificationResult")
+        .setProperty("component").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("auditdetails").constant("Verification Result message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send To Topic
+        .to("kafka:FHIRSvr_VerificationResult?brokers=localhost:9092")
+        // Invoke External FHIR Server
+        .to("https://localhost:9443/fhir-server/api/v4/VerificationResult")
         //Process Response
     ;
     /*
