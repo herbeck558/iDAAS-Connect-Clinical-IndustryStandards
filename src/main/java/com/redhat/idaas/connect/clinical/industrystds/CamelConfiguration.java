@@ -98,7 +98,7 @@ public class CamelConfiguration extends RouteBuilder {
     *  Logging
     */
     from("direct:logging")
-      //.log(LoggingLevel.INFO, log, "HL7 Admissions Message: [${body}]")
+        .log(LoggingLevel.INFO, log, "HL7 Admissions Message: [${body}]")
     ;
 
     /*
