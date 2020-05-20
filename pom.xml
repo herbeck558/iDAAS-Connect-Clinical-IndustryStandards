@@ -7,7 +7,7 @@
   
   <groupId>com.redhat.idaas.connect.clinical.industrystds</groupId>
   <artifactId>idaas-connect-clinical-industrystds</artifactId>
-  <version>2020-05-08</version>
+  <version>2020-05-29</version>
   <name>iDAAS Connect Clinical</name>
 
   <properties>
@@ -97,28 +97,11 @@
       <artifactId>camel-kafka</artifactId>
       <version>2.23.2.fuse-760030-redhat-00001</version>
     </dependency>
-    <!--<dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-stream</artifactId>
-      <version>3.0.0-RC3</version>
-    </dependency>-->
-    <!-- Added for HTTP Support - FHIR Inbound requests -->
-   <!-- <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-jetty</artifactId>
-    </dependency>-->
-    <!-- REST API Support -->
-    <!-- Will need to update project to Camel 3 for support
+    <!-- Servlet -->
     <dependency>
       <groupId>org.apache.camel</groupId>
-      <artifactId>camel-rest</artifactId>
+      <artifactId>camel-servlet</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-rest-openapi</artifactId>
-      <version>3.1.0</version>
-    </dependency> -->
-
     <!-- PDF -->
     <dependency>
       <groupId>org.apache.camel</groupId>
