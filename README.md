@@ -21,6 +21,11 @@ Here is a visual on the iDAAS Platform and all its specific components:
 width="900" height="600" />
 </p>
 
+## Other Repositories Needed/Required
+Because of the design of iDAAS some components could require additional components to enable additional iDAAS features or capabilities. iDAAS Connect Clinical Industry Standards is independant; however, adding the middle tier component below enables a very reusable data distribution design pattern. 
+
+* <a href="https://github.com/RedHat-Healthcare/iDAAS-Connect-Clinical-MiddleTier" target="_blank">iDAAS Connect Clinical Middle Tier</a>: This component is specifically implemented to help keep the iDAAS Connect Clinical Industry Standards component small by moving the data streaming and HCDD-EIP (Healthcare Data Distribution and Enterprise Integration Pattern).
+
 ## Other Contributions within Source
 As discussed in the iDAAS base repository this component has additional contributions in order to assist. In order to try and not just put the software out there we also wanted to help development and implementation as well. 
 To help support these areas we have included additional artifacts within specific directories. 
