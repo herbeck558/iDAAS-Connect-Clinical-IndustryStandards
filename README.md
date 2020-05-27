@@ -33,6 +33,10 @@ To help support these areas we have included additional artifacts within specifi
 * content: This directory is intended to maintain any content published about the specific component. Within this directory is the Development documentation and implementation guides. The core images and general base content that we use across all iDAAS components are leveraged within the <a href="https://github.com/RedHat-Healthcare/iDAAS" target="_blank">iDAAS core repository</a> within the content directory.
 * platform-scripts: designed to assist implementation with scripts that can be downloaded and leveraged. 
 It should be understood that these scripts will need to be tweaked, mostly to address base implemented directories of solutions. These scripts currently cover A-MQ and Kafka. The intent for them is to be able to start the products and enable implementors to quickly get the products running. 
+* testing data: <a href="https://github.com/RedHat-Healthcare/iDAAS/tree/master/testdata" target="_blank">iDAAS base testing data</a>. After building, running and/or deploying implementors might want to test. We have included industry samples for everyone to leverage. Within the solution there are several directories to leverage, this will be the consistent area where we continue to update testing capabilities. <br>
+    - You can leverage the files within samples-hl7 messages to send data via ANY MLLP client. <br>
+    - You can leverage the files within samples-fhir messages to post these files using postman or other
+common tooling for testing endpoints.<br>
 
 # Practical Scenarios This Component Addrresses
 As mentioned in the <a href="https://github.com/RedHat-Healthcare/iDAAS" target="_blank">iDAAS Repository</a> in much greater detail the Red Hat Healthcare team has created a fictious company named Care Delivery Corporation US (CADuCeUS).
@@ -51,17 +55,19 @@ Here are some of the scenarios this component has developed into it for ease of 
 The following scenarios as what iDAAS Connect Clinical Industry Standards platform can help demonstrate.
 
 * HL7 v2 message processing of the most commonly used transactions. There is NO version, vendor or other limitation (like Z segment processing)
-* FHIR R4 processing, currently there are almost 30 FHIR resources supported.
+* FHIR R4 processing, currently there are almost 40 clinical and reporting FHIR resources supported specific to this platform component.
 * Enterprise and/or Organization and/or Application level by message type data distribution of data leveraging the HCDD-EIP.
 
 # Building, Running and Testing
 
 ## Building
 This code can be built (and will be run) with the following command:
+
 mvn clean install
 
 ## Packaging
-To repackage the solution to a single jar:
+To package the solution to a single jar:
+
 mvn package
 
 ## Running
@@ -70,16 +76,19 @@ To Run The Platform:
 1. Make sure Kafka is started (start script is in the platform-scripts directory)
 2. Ensure Topics are in place (you can run the kafkacmd-topics-list in the platform-scripts directory).
 if there a topics then you should be ok to run. If you are concerned or no topics are listed, then run the 
-kafkacmd_topics_createiDAAS script in the platform-scripts directory.
+kafkacmd_topics_createiDAAS script in the platform-scripts directory. All that will happen is ANY queues that are not in place when the create script runs will be created.
 3. java -jar <jarfile.jar> 
 
-## Testing Data
-After building, running and/or deploying implementors might want to test. We have included industry samples for everyone to leverage.
-Within the solution in the src/test/data there are two directories test-hl7 and test-fhir.
+## Testing
+We are currently creating a tesing component to simplify testing. In the meantime as we work on this please follow the following general testing implementation steps:
 
-1. You can leverage the files within test-hl7 messages to send data via ANY MLLP client. 
-2. You can leverage the files within test-fhir messages to post these files using postman or other
-common tooling for testing endpoints.
+### HL7 v2
+1. Go to <a href="https://github.com/RedHat-Healthcare/iDAAS/tree/master/testdata" target="_blank">iDAAS base testing data</a> and get the needed messages from samples-hl7 directory. 
+2. Use any standard HL7 client and after connecting to the correct MLLP socket send a transaction. With the base platform you will be able to see a transaction process and also the acknowledgement sent back.
+
+### FHIR
+1. Go to <a href="https://github.com/RedHat-Healthcare/iDAAS/tree/master/testdata" target="_blank">iDAAS base testing data</a> and get the needed messages from samples-fhir directory. 
+2. Leverage a tool like Postman and configure the endpoint to leverage. For general reference it is hrrp://hostname:8080/camel/<fhirResourceName>. If you connect a FHIR server there will be some additional configuration in the platform to do.
 
 ## Containers Based - Where Possible 
 As we have discussed the iDAAS platform we have taken a very modern cloud native approach to everything. As you will see when you package the solution they are very small < 80 megs and have a ton of features. However, it is important to know that some components CANNOT be run as containers accurately. Specifically, the HL7 connections cannot be accurateot scaled as containers as they are long running server socket based protocols. Since this plaform has HL7v2 and FHIR bundled into the same solution you will just need to be aware of this.
